@@ -20,7 +20,7 @@ setup-php5-sqlite2.i : utils.i php-pkg.i php5-sqlite2-pkg.i sqlite.i
 
 php5-sqlite2-config.i : setup-php5-sqlite2.i
 	cp $(files_dir)/etc/php5/mods-available/sqlite.ini /etc/php5/mods-available/sqlite.ini
-	ln -sf /etc/php5/mods-available/sqlite.ini /etc/php5/conf.d/20-sqlite.ini
+	ln -sf ../mods-available/sqlite.ini /etc/php5/conf.d/20-sqlite.ini
 	touch $@
 
 php.i : php-pkg.i php5-fpm-config.i php5-fpm-service.i php5-sqlite2-pkg.i setup-php5-sqlite2.i php5-sqlite2-config.i
