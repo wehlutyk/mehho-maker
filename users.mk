@@ -39,7 +39,7 @@ deluser-full.i : utils.i group-user.i group-data.i
 	touch $@
 
 setup-users.i : group-admin.i group-user.i group-data.i skel-folder.i
-	$(jinjize) $(scripts_dir)/setup-users.jinja $(settings)
+	$(jinja_run) $(scripts_dir)/setup-users.jinja $(settings)
 	touch $@
 
 users.i : group-admin.i group-sshlogin.i group-sshnopwd.i group-user.i group-data.i disable-root.i skel-folder.i adduser-full.i deluser-full.i setup-users.i

@@ -1,0 +1,22 @@
+#!/bin/bash
+# Parse a jinja2 template and copy it to destination
+
+# Don't tolerate errors
+set -e
+
+# Check our arguments
+if [ $# != 3 ]
+then
+  echo "Usage: $(basename $0) script-template yaml-data destination"
+  exit 1
+fi
+
+# Get our arguments
+SCRIPT="$1"
+DATA="$2"
+DESTINATION="$3"
+
+# Get the parsed template and copy it
+TMP=$(scripts/jinjize "$SCRIPT" "$DATA")
+cp $TMP $DESTINATION
+rm $TMP

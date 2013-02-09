@@ -1,5 +1,5 @@
 #!/bin/bash
-# Parse a jinja2 template and save to a temp file
+# Parse a jinja2 template and run it as a script
 
 # Don't tolerate errors
 set -e
@@ -15,7 +15,7 @@ fi
 SCRIPT="$1"
 DATA="$2"
 
-# Parse the template
-TMP=$(tempfile -m 700)
-jinja2 --format=yaml ${SCRIPT} ${DATA} > ${TMP}
-echo ${TMP}
+# Get the parsed template and run it
+TMP=$(scripts/jinjize "$SCRIPT" "$DATA")
+bash $TMP
+rm $TMP

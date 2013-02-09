@@ -1,0 +1,37 @@
+#!/bin/bash
+# Download from svn, compile, and install SQLite for php
+
+# Don't tolerate errors
+set -e
+
+OLDWD=$(pwd)
+TMPD=$(mktemp -d)
+cd $TMPD
+
+echo
+echo "=== Downloading source from svn ..."
+svn co https://svn.php.net/repository/pecl/sqlite
+SVNVER=$(svn info sqlite | grep "^Revision:" | sed -r 's/Revision: +//')
+cd sqlite/trunk
+
+echo
+echo "=== Running phpize ..."
+phpize
+PHPAPIVER=$(phpize -v | grep "^Zend Module Api No:" | sed -r 's/Zend Module Api No: +//')+lfs
+
+echo
+echo "=== Running configure ..."
+./configure
+
+echo
+echo "=== Running make ..."
+make
+
+echo
+echo "=== Running checkinstall ..."
+checkinstall --pkgname php5-sqlite2 --provides php5-sqlite2 --pkgversion ${SVNVER}-svn --requires "libc6, libsqlite0, libsqlite3-0, phpapi-${PHPAPIVER}, php5-common" -y
+
+echo
+echo "=== Cleaning up ..."
+cd $OLDWD
+rm -rf $TMPD

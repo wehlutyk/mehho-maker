@@ -3,7 +3,7 @@ sudo-pkg.i :
 	touch $@
 
 setup-sudoers.i :
-	$(jinjize) $(scripts_dir)/setup-sudoers.jinja $(settings)
+	$(jinja_run) $(scripts_dir)/setup-sudoers.jinja $(settings)
 	touch $@
 
 sudo.i : setup-sudoers.i sudo-pkg.i
