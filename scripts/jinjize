@@ -1,0 +1,22 @@
+#!/bin/bash
+# Run a command in the jinja2-cli environment
+
+# Don't tolerate errors
+set -e
+
+# Check our arguments
+if [ $# != 2 ]
+then
+  echo "Usage: $(basename $0) script-template yaml-data"
+  exit 1
+fi
+
+# Get our arguments
+SCRIPT="$1"
+DATA="$2"
+
+# Run the command
+TMP=$(tempfile -m 700)
+jinja2 --format=yaml ${SCRIPT} ${DATA} > ${TMP}
+bash ${TMP}
+rm ${TMP}

@@ -1,0 +1,48 @@
+#!/bin/bash
+# Set up some users
+
+# Don't tolerate errors
+set -e
+
+{% for name, props in users.iteritems() -%}
+# Create the user's group
+getent group | grep -q "^{{ name }}:" || addgroup --gid {{ props['gid'] }} {{ name }}
+
+if ! getent passwd | grep -q "^{{ name }}:"
+then
+  # Create the user
+  adduser --gecos "{{ props['fullname'] }}" --shell {{ props['shell'] }} --home /home/{{ name }} --uid {{ props['uid'] }} --gid {{ props['gid'] }} --disabled-password --no-create-home {{ name }}
+
+  # Add user to his groups
+  {% for group in props['groups'] %}
+  adduser {{ name }} {{ group }}
+  {% endfor %}
+
+  # Set password
+  tmp=$(tempfile -m 640)
+  cat /etc/shadow | sed 's%^{{ name }}:\*:%{{ name }}:{{ props['password'] }}:%' > $tmp
+  cp $tmp /etc/shadow
+  chmod 640 /etc/shadow
+  rm $tmp
+
+  # Create home folder
+  if [ ! -d /home/{{ name }} ]
+  then
+    cp -r /etc/skel /home/{{ name }}
+    chmod -R u=rwX,g=rX,o= /home/{{ name }}
+    chown -R {{ name }}:{{ name }} /home/{{ name }}
+  fi
+
+  # Add ssh keys
+  if [ ! -d /home/{{ name }}/.ssh ]
+  then
+    mkdir -m 700 /home/{{ name }}/.ssh
+    touch /home/{{ name }}/.ssh/authorized_keys
+    chown -R {{ name }}:{{ name }} /home/{{ name }}/.ssh
+  fi
+
+  {% for key in props['sshkeys'] %}
+  cat /home/{{ name }}/.ssh/authorized_keys | grep -q '{{ key }}' || echo "{{ key }}" >> /home/{{ name }}/.ssh/authorized_keys
+  {% endfor %}
+fi
+{% endfor %}

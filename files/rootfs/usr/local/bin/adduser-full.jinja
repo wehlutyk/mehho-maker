@@ -1,0 +1,76 @@
+#!/bin/bash
+
+# This is a wrapper for adduser & Co, making the process
+# of creating a new user completely automatic. Finally it adds the personal
+# web pages folder in the user's home folder.
+
+# Default groups for a new user. 'user' should always be part of these!
+DEFAULT_GROUPS="user data"
+MEMBER_MAILINGLIST_NAME="{{ location['org_name'] }}-users"
+
+# A small error function, just in case
+error ()
+{
+  echo
+  echo "Error while creating the user, see above for details."
+  echo "Aborting."
+  echo
+  exit 1
+}
+
+# Print usage
+usage ()
+{
+  echo "Usage: `basename $0` username"
+}
+
+# And here we start
+if [ ! $# == 1 ]
+then
+  usage
+  exit
+fi
+
+USER_NAME="$1"
+
+echo "Running \"adduser $USER_NAME\"..."
+echo "Here's a set of passwords from which you can pick or modify..."
+echo
+pwgen -nc 8 48
+
+echo
+adduser "$USER_NAME" || error
+echo "Adding user '$USER_NAME' to groups '`echo $DEFAULT_GROUPS | sed \"s/ /', '/g\"`'"
+for G in $DEFAULT_GROUPS
+do
+  adduser "$USER_NAME" "$G" || error
+done
+
+echo -n "Creating www-perso folder..."
+mkdir "/home/$USER_NAME/www-perso" || error
+echo "OK"
+
+echo -n "Setting home folder permissions... "
+chgrp www-data "/home/$USER_NAME" || error
+chmod 2755 "/home/$USER_NAME/www-perso" || error
+chgrp www-data "/home/$USER_NAME/www-perso" || error
+echo "OK"
+
+echo "Reloading Apache Web Server for the www-perso configuration..."
+/etc/init.d/apache2 reload || error
+
+USER_EMAIL=$(getent passwd "$USER_NAME" | sed 's/.*<//' | sed 's/>.*//')
+echo "Subscribing \"$USER_NAME\" to \"$MEMBER_MAILINGLIST_NAME\" mailinglist"
+echo "  with email \"$USER_EMAIL\"..."
+echo "$USER_EMAIL" | /usr/lib/mailman/bin/add_members -r - --welcome-msg=y --admin-notify=y "$MEMBER_MAILINGLIST_NAME" || error
+
+echo
+echo "Checking groups with \"groups $USER_NAME\"..."
+groups "$USER_NAME"
+
+echo
+echo "All went well, \"$USER_NAME\" is good to go."
+echo
+
+exit $?
+

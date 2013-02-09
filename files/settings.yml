@@ -1,0 +1,45 @@
+# Location info used for openssl, users, postfix, and php.
+location:
+
+  # Country Name (2 letter code)
+  country_name: FR
+
+  # State or Province Name (full name)
+  state_province_name: Île-de-France
+
+  # Locality Name (eg, city)
+  locality_name: Paris
+
+  # Organization Name (eg, company)
+  org_name: Mehho
+
+  # Relay host for SMTP
+  relay_host: smtp.numericable.fr
+
+  # Timezone
+  timezone: Europe/Paris
+
+
+# Credentials for special users
+users:
+
+  sebadmin:
+    shell: /bin/bash
+    uid: 1100
+    gid: 1100
+    groups:
+      - admin
+      - sshlogin
+      - user
+      - data
+    fullname: Sebastien Lerique Administrator
+    # This can be changed, using 'mkpasswd -m SHA-512 $password'
+    password: '$6$6M/InI47f1gac$8tY/GBdtEbuxAJUMwDX1P4RGkIEZTNeQwMc4E19klFTnzwwdkHqD0thhLHlGBtr8KGfu4y8IRS649OERnhiz70'
+    sshkeys:
+      - 'ssh-dss AAAAB3NzaC1kc3MAAACBANueq2n6PaUerqUVoTNfviXYWKIiJh/5QEphxkzQY6TrurZJP+qIJ8qUgeYvDhP0Zs9Gl18Zm1P/8x5y/REz6SPa4pUQ2+K+1VWewQJqnvlQSBibZlFoorn7hnMaLX/bLRqQcR7kR/TMWhnWw+DlVtlZGqx7acvEKSYQAo//kzuTAAAAFQCWVO1/cIPKPgl4rK91PfU+3XxbfQAAAIEAsV8seaYnd7FUeMvUcVH/YcHyJ0SvKNwFn7JhdSWQ/T1BIRSsea1++Eo2DIR0+K15Hxv9UGNMjI9MPxhOizFbffu2mDybyAAXeZBTTRkrCFvBI765FDqrI9jv2ljT2n/jFKk6NF07VY2/rJX6j7V7WD3KS3kVCtBnDGIEa2mHEWEAAACBAMBue3StYz7GqaeZfDvDSAikOeEBwu+oRU3fHi3hcj9MvXnRCmvIw85zILEhl58pr/lCQ93DZJetJgluTwyenK9dsx9oVWwdzN5u/tIm3PSfYMoHpG8hP1ZzutGwNJaA7H9eSSuzMTkWyqRdftEL9ifYegIJ4qcJlvnsYTjRIDaP sebastien@sebastien-laptop'
+
+
+# Sudo
+sudo:
+  groups:
+    admin: ALL=(ALL) ALL

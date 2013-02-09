@@ -1,0 +1,58 @@
+#!/bin/bash
+
+# This is a wrapper for deluser, making
+# the process of deleting a user a little more automatic.
+
+MEMBER_MAILINGLIST_NAME="{{ location['org_name'] }}-users"
+
+# A small error function, just in case
+error ()
+{
+  echo
+  echo "Error while deleting the user, see above for details."
+  echo "Aborting."
+  echo
+  exit 1
+}
+
+# Print usage
+usage ()
+{
+  echo "Usage: `basename $0` username"
+}
+
+# And here we start
+if [ ! $# == 1 ]
+then
+  usage
+  exit
+fi
+
+USER_NAME="$1"
+
+USER_EMAIL=$(getent passwd "$USER_NAME" | sed 's/.*<//' | sed 's/>.*//')
+echo "Unsubscribing \"$USER_NAME\" from \"$MEMBER_MAILINGLIST_NAME\"" 
+echo "  mailinglist (email: \"$USER_EMAIL\")..."
+/usr/lib/mailman/bin/remove_members "$MEMBER_MAILINGLIST_NAME" "$USER_EMAIL" || error
+
+echo
+echo "Now deleting \"$USER_NAME\"..."
+deluser "$USER_NAME" || error
+
+echo
+echo -n "Changing old home folder permissions... "
+chmod 700 "/home/$USER_NAME" || error
+chown root:root "/home/$USER_NAME" || error
+
+echo
+echo "Reloading Apache Web Server for www-perso configuration..."
+/etc/init.d/apache2 reload || error
+
+echo
+echo "All good, now you can delete \"$USER_NAME\"'s old home folder with this command:"
+echo
+echo "     sudo rm -r /home/users/$USER_NAME"
+echo
+
+exit $?
+

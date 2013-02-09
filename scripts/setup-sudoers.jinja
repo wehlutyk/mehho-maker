@@ -1,0 +1,21 @@
+#!/bin/bash
+# Setup sudoers
+
+# Don't tolerate errors
+set -e
+
+# Set group sudoers
+{% if sudo.has_key('groups') %}
+{% for group, rights in sudo['groups'].iteritems() %}
+echo '%{{ group }} {{ rights }}' > /etc/sudoers.d/{{ group }}
+chmod 440 /etc/sudoers.d/{{ group }}
+{% endfor %}
+{% endif %}
+
+# Set individual sudoers
+{% if sudo.has_key('users') %}
+{% for user, rights in sudo['users'].iteritems() %}
+echo '{{ user }} {{ rights }}' > /etc/sudoers.d/{{ user }}
+chmod 440 /etc/sudoers.d/{{ user }}
+{% endfor %}
+{% endif %}
