@@ -29,12 +29,12 @@ skel-folder.i : utils.i
 	touch $@
 
 adduser-full.i : utils.i group-user.i group-data.i
-	$(workon_jinja) && jinja2 --format=yaml $(files_dir)/usr/local/bin/adduser-full.jinja $(settings) > /usr/local/bin/adduser-full
+	$(jinja_copy) $(files_dir)/usr/local/bin/adduser-full.jinja $(settings) /usr/local/bin/adduser-full
 	chmod 750 /usr/local/bin/adduser-full
 	touch $@
 
 deluser-full.i : utils.i group-user.i group-data.i
-	$(workon_jinja) && jinja2 --format=yaml $(files_dir)/usr/local/bin/deluser-full.jinja $(settings) > /usr/local/bin/deluser-full
+	$(jinja_copy) $(files_dir)/usr/local/bin/deluser-full.jinja $(settings) /usr/local/bin/deluser-full
 	chmod 750 /usr/local/bin/deluser-full
 	touch $@
 

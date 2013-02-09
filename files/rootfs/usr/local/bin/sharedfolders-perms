@@ -1,0 +1,63 @@
+#!/bin/bash
+
+# A script to update the permissions and ownerships
+# of shared folders on the server, namely:
+#    [folder]                [perms base]    [perms recurs]    [ownerships]
+#    /srv/stuff/data         2770            g+s               :data
+#    /srv/stuff/www-public   2775            go-x+rX,g+s       :data
+#    ~/www-perso             2775            g=u,g+s           ~:www-data
+
+# Here we go:
+#echo "Sharedfolders-perms: now updating permissions and ownerships"
+#echo "                     of shared folders."
+#echo
+
+
+#
+# [/srv/stuff/data]
+#
+FOLDER="/srv/stuff/data"
+#echo -n "   $FOLDER  ....  "
+chmod u=rwx,g=rwxs,o= $FOLDER
+chmod -R g+s $FOLDER
+chgrp -R data $FOLDER
+#echo "OK"
+
+
+#
+# [/srv/stuff/www-public]
+#
+FOLDER="/srv/stuff/www-public"
+#echo -n "   $FOLDER  ....  "
+chmod u=rwx,g=rwxs,o=rx $FOLDER
+chmod -R go-x+rX,g+s $FOLDER
+chgrp -R data $FOLDER
+#echo "OK"
+
+
+#
+# [~/www-perso]
+#
+#echo
+#echo " Now doing personal web pages..."
+RAWLIST=$(getent group user)
+L=$(echo ${RAWLIST##*:} | sed 's/,/ /g' | sed 's/sebadmin//')
+for u in $L
+do
+	FOLDER="/home/$u/www-perso"
+#	echo -n "   $FOLDER  ....  "
+	chmod u=rwx,g=rwxs,o=rx $FOLDER
+	chmod -R g=u,g+s $FOLDER
+	chown -R $u:www-data $FOLDER
+#	echo "OK"
+done
+
+
+#
+# Finish and quit
+#
+#echo
+#echo "If no errors were displayed, then all folders and files were"
+#echo "   successfully updated in their permissions and ownerships."
+#echo
+exit
