@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Don't tolerate errors
+set -e
+
+if [ -f "/etc/ssl/{{ grains['fqdn'] }}.csr" ]
+then
+  echo "File '/etc/ssl/{{ grains['fqdn'] }}.csr' already exists!"
+  echo "Not overwriting it => aborting."
+  exit 1
+fi
+
+/usr/bin/openssl req -new -key /etc/ssl/private/{{ grains['fqdn'] }}.key -out /etc/ssl/{{ grains['fqdn'] }}.csr

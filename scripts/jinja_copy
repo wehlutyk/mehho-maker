@@ -19,4 +19,5 @@ DESTINATION="$3"
 # Get the parsed template and copy it
 TMP=$(scripts/jinjize "$SCRIPT" "$DATA")
 cp $TMP $DESTINATION
+chmod 644 $DESTINATION
 rm $TMP

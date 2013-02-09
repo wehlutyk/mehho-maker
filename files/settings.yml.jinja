@@ -43,3 +43,10 @@ users:
 sudo:
   groups:
     admin: ALL=(ALL) ALL
+
+# Nginx
+nginx:
+  vhosts:
+    {{ grains['domain'] }}:
+      cert: {{ grains['domain'] }}-cacert.crt
+      key: {{ grains['fqdn'] }}.key

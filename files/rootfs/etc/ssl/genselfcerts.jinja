@@ -1,0 +1,37 @@
+#!/bin/bash
+# Generate self-signed certificates for {{ grains['domain'] }} and mail.{{ grains['domain'] }}
+
+# Don't tolerate errors
+set -e
+
+# We assume the key has already been generated
+
+# Certificate for {{ grains['domain'] }}
+./gencsr << EOF
+
+
+
+
+
+
+
+
+
+EOF
+openssl x509 -req -days 365 -in {{ grains['fqdn'] }}.csr -signkey private/{{ grains['fqdn'] }}.key -out certs/{{ grains['domain'] }}-cacert.crt
+rm {{ grains['fqdn'] }}.csr
+
+# Certificate for mail.{{ grains['domain'] }}
+./gencsr << EOF
+
+
+
+
+
+mail.{{ grains['domain'] }}
+
+
+
+EOF
+openssl x509 -req -days 365 -in {{ grains['fqdn'] }}.csr -signkey private/{{ grains['fqdn'] }}.key -out certs/mail.{{ grains['domain'] }}-cacert.crt
+rm {{ grains['fqdn'] }}.csr

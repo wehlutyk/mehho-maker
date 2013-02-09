@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Don't tolerate errors
+set -e
+
+if [ -f "/etc/ssl/private/{{ grains['fqdn'] }}.key" ]
+then
+  echo "File '/etc/ssl/private/{{ grains['fqdn'] }}.key' already exists!"
+  echo "Not overwriting it => aborting."
+  exit 1
+fi
+
+/usr/bin/openssl genpkey -algorithm RSA -out /etc/ssl/private/{{ grains['fqdn'] }}.key 2048

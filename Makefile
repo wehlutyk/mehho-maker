@@ -13,7 +13,8 @@ jinja_copy := $(workon_jinja) && $(scripts_dir)/jinja_copy
 apt_install := apt-get -qy install
 
 # System settings
-settings := files/settings.yml
+settings_jinja := files/settings.yml.jinja
+settings := settings.yml.i
 
 # Make settings
 SHELL = /bin/bash

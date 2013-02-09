@@ -1,0 +1,34 @@
+#!/bin/bash
+# Set up the grains and main settings
+
+# Don't tolerate errors
+set -e
+
+# Check our arguments
+if [ $# != 2 ]
+then
+  echo "Usage: $(basename $0) settings_jinja settings"
+  exit 1
+fi
+
+# Get our arguments
+SETTINGS_JINJA="$1"
+SETTINGS="$2"
+
+# Create the grains
+GRAINS=$(tempfile)
+echo >> $GRAINS
+echo >> $GRAINS
+echo "# Grains" >> $GRAINS
+echo "grains: " >> $GRAINS
+echo "  domain: $(hostname -d)" >> $GRAINS
+echo "  fqdn: $(hostname -f)" >> $GRAINS
+
+# Create the settings file
+TMP=$(scripts/jinjize ${SETTINGS_JINJA} $GRAINS)
+cat $GRAINS >> $TMP
+
+# Copy and clean up
+cp $TMP $SETTINGS
+chmod 644 $SETTINGS
+rm $TMP $GRAINS

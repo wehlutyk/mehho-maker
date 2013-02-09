@@ -1,0 +1,30 @@
+#!/bin/bash
+# Setup nginx virtual hosts
+
+# Don't tolerate errors
+set -e
+
+{% for vhostname, props in nginx['vhosts'].iteritems() -%}
+## Virtual host {{ vhostname }}
+# Nginx folders
+mkdir -p /var/www/{{ vhostname }}
+mkdir -p /etc/nginx/{{ vhostname }}-conf.d
+
+# Make temp settings
+TMP=$(tempfile)
+echo "vhostname: {{ vhostname }}" >> $TMP
+{%- if vhostname == grains['domain'] %}
+echo "ishomevhost: True" >> $TMP
+{%- else %}
+echo "ishomevhost: False" >> $TMP
+{%- endif %}
+echo "cert: {{ props['cert'] }}" >> $TMP
+echo "key: {{ props['key'] }}" >> $TMP
+
+# Create the vhosts config
+scripts/jinja_copy files/rootfs/etc/nginx/sites-available/vhost.jinja $TMP /etc/nginx/sites-available/{{ vhostname }}
+ln -sf ../sites-available/{{ vhostname }} /etc/nginx/sites-enabled/{{ vhostname }}
+
+# Clean up
+rm $TMP
+{%- endfor %}

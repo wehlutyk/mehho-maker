@@ -7,15 +7,15 @@ set -e
 # Check our arguments
 if [ $# != 2 ]
 then
-  echo "Usage: $(basename $0) script-template yaml-data"
+  echo "Usage: $(basename $0) template yaml-data"
   exit 1
 fi
 
 # Get our arguments
-SCRIPT="$1"
+TEMPLATE="$1"
 DATA="$2"
 
 # Parse the template
-TMP=$(tempfile -m 700)
-jinja2 --format=yaml ${SCRIPT} ${DATA} > ${TMP}
+TMP=$(tempfile)
+jinja2 --format=yaml ${TEMPLATE} ${DATA} > ${TMP}
 echo ${TMP}
