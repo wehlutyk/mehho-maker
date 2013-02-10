@@ -79,3 +79,8 @@ dyndns:
     {{ grains['domain'] }}:
       server: www.ovh.com
       username: {{ grains['domain'] }}-{{ grains['host'] }}
+
+# Dovecot
+dovecot:
+  cert: mail.{{ grains['domain'] }}-cacert.crt
+  key: {{ grains['fqdn'] }}.key
