@@ -50,3 +50,16 @@ nginx:
     {{ grains['domain'] }}:
       cert: {{ grains['domain'] }}-cacert.crt
       key: {{ grains['fqdn'] }}.key
+
+# Postfix
+postfix:
+  cert: mail.{{ grains['domain'] }}-cacert.crt
+  key: {{ grains['fqdn'] }}.key
+  rootaliasgroup: admin
+
+# Mailman
+mailman:
+  lists_host: lists
+  site_pass: site_pass
+  sitelist_pass: sitelist_pass
+  creator_pass: creator_pass

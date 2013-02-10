@@ -21,6 +21,7 @@ echo >> $GRAINS
 echo >> $GRAINS
 echo "# Grains" >> $GRAINS
 echo "grains: " >> $GRAINS
+echo "  host: $(hostname)" >> $GRAINS
 echo "  domain: $(hostname -d)" >> $GRAINS
 echo "  fqdn: $(hostname -f)" >> $GRAINS
 

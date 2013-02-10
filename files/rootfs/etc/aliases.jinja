@@ -1,0 +1,30 @@
+# Redirect all important stuff to root
+mailer-daemon: postmaster
+postmaster: root
+nobody: root
+hostmaster: root
+usenet: root
+news: root
+webmaster: root
+sslmaster: root
+listsmaster: root
+www: root
+www-data: root
+ftp: root
+abuse: root
+noc: root
+security: root
+clamav: root
+logcheck: root
+awstats: root
+mediagoblin: root
+roundcube: root
+
+# Then send what mail root receives to people in a certain group
+root:
+{%- for user, props in users.iteritems() -%}
+{%- for group in props['groups'] -%}
+{%- if group == postfix['rootaliasgroup'] %} {{ user }}
+{%- endif -%}
+{%- endfor -%}
+{%- endfor %}
