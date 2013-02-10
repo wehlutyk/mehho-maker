@@ -38,7 +38,7 @@ deluser-full.i : utils.i group-user.i group-data.i
 	chmod 750 /usr/local/bin/deluser-full
 	touch $@
 
-setup-users.i : group-admin.i group-user.i group-data.i skel-folder.i
+setup-users.i : utils.i group-admin.i group-user.i group-data.i skel-folder.i
 	$(jinja_run) $(scripts_dir)/setup-users.jinja $(settings)
 	touch $@
 

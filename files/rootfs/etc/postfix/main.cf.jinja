@@ -68,6 +68,6 @@ recipient_delimiter = +
 content_filter = smtp-amavis:[127.0.0.1]:10024
 
 # Mailman configuration
-#relay_domains = {{ mailman['lists_host'] }}.{{ grains['domain'] }}
-#transport_maps = hash:/etc/postfix/transport
-#mailman_destination_recipient_limit = 1
+relay_domains = {{ mailman['lists_host'] }}.{{ grains['domain'] }}
+transport_maps = hash:/etc/postfix/transport
+mailman_destination_recipient_limit = 1

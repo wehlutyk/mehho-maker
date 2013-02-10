@@ -7,6 +7,9 @@
 #    /srv/stuff/www-public   2775            go-x+rX,g+s       :data
 #    ~/www-perso             2775            g=u,g+s           ~:www-data
 
+# Don't tolerate errors
+set -e
+
 # Here we go:
 #echo "Sharedfolders-perms: now updating permissions and ownerships"
 #echo "                     of shared folders."

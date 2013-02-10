@@ -1,0 +1,9 @@
+#!/bin/bash
+# Setup nginx virtual host for mailman
+
+# Don't tolerate errors
+set -e
+
+# Create the vhosts config
+scripts/jinja_copy files/rootfs/etc/nginx/sites-available/mailman.jinja settings.yml.i /etc/nginx/sites-available/{{ mailman['lists_host'] }}.{{ grains['domain'] }}
+ln -sf ../sites-available/{{ mailman['lists_host'] }}.{{ grains['domain'] }} /etc/nginx/sites-enabled/{{ mailman['lists_host'] }}.{{ grains['domain'] }}

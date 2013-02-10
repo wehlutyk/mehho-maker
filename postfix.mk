@@ -6,7 +6,7 @@ postfix-pkg.i : utils.i
 	$(apt_install) postfix
 	touch $@
 
-postfix-config.i : postfix-pkg.i
+postfix-config.i : postfix-pkg.i utils.i
 	$(jinja_copy) $(files_dir)/etc/postfix/main.cf.jinja $(settings) /etc/postfix/main.cf
 	cp $(files_dir)/etc/postfix/master.cf /etc/postfix/master.cf
 	$(jinja_copy) $(files_dir)/etc/mailname.jinja $(settings) /etc/mailname
@@ -25,7 +25,7 @@ ufw-allow-smtp2525.i : ufw-pkg.i
 	ufw status | grep -qE "2525 +ALLOW +Anywhere" || ufw allow 2525
 	touch $@
 
-postfix-service.i : postfix-pkg.i ufw-allow-smtp.i ufw-allow-smtp2525.i postfix-config.i postfix-newaliases.i
+postfix-service.i : postfix-pkg.i ufw-allow-smtp.i ufw-allow-smtp2525.i postfix-config.i postfix-newaliases.i mailman-postfix-transport.i
 	service postfix restart
 	touch $@
 

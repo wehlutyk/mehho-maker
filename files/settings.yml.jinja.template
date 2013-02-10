@@ -63,3 +63,19 @@ mailman:
   site_pass: site_pass
   sitelist_pass: sitelist_pass
   creator_pass: creator_pass
+
+# Dyndns
+dyndns:
+  credentials:
+    www.ovh.com:
+      {{ grains['domain'] }}-{{ grains['host'] }}: pass
+  domains:
+    {{ grains['fqdn'] }}:
+      server: www.ovh.com
+      username: {{ grains['domain'] }}-{{ grains['host'] }}
+    lists.{{ grains['domain'] }}:
+      server: www.ovh.com
+      username: {{ grains['domain'] }}-{{ grains['host'] }}
+    {{ grains['domain'] }}:
+      server: www.ovh.com
+      username: {{ grains['domain'] }}-{{ grains['host'] }}

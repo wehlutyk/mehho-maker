@@ -1,0 +1,36 @@
+#/bin/bash
+
+# Don't tolerate errors
+set -e
+
+USERNAME={{ username }}
+PASSWORD={{ password }}
+HOSTS=({{ dyndomain }})
+SERVER={{ server }}
+
+#
+# Now for the actual work
+#
+
+CURRENT_IP=`wget -O - 'http://checkip.dyndns.org/' 2>/dev/null | sed -e 's/.*Address: \([^<]*\).*/\1/'`
+
+if [ -f /tmp/my_ip ]
+then
+        OLD_IP=`cat /tmp/my_ip`
+fi # # Don't update unless ip has changed #
+
+if [ "x"$CURRENT_IP == "x"$OLD_IP ]
+then
+        exit
+fi
+
+echo "IP changed from " $OLD_IP " to " $CURRENT_IP
+echo "Saving new IP"
+echo $CURRENT_IP > /tmp/my_ip
+
+for HOST in ${HOSTS[@]};
+do
+        echo "Updating " $HOST " to " $CURRENT_IP
+        wget -O - "http://${USERNAME}:${PASSWORD}@${SERVER}/nic/update?system=dyndns&hostname=${HOST}&myip=${CURRENT_IP}&wildcard=NOCHG&mx=NOCHG&backmx=NOCHG" 2>/dev/null
+        echo ""
+done

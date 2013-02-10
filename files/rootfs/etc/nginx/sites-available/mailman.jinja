@@ -1,0 +1,41 @@
+server {
+    listen 80;
+    server_name {{ mailman['lists_host'] }}.{{ grains['domain'] }};
+    root /usr/lib;
+
+    location = / {
+        rewrite ^ /listinfo permanent;
+    }
+
+    location / {
+        gzip off;
+        root /usr/lib/cgi-bin/mailman;
+
+        fastcgi_split_path_info ^(/[^/]*)(.*)$;
+        fastcgi_pass unix:/var/run/fcgiwrap.socket;
+
+        # Fastcgi SCRIPT_FILENAME goes *before* standard params, since fcgiwrap
+        # seems to take the first SCRIPT_FILENAME provided into account, instead
+        # of the last.
+
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include /etc/nginx/fastcgi_params;
+        fastcgi_param PATH_INFO $fastcgi_path_info;
+    }
+
+    location /cgi-bin/mailman {
+        rewrite ^/cgi-bin/mailman(.*)$ $1 permanent;
+    }
+
+    location /images/mailman {
+        alias /var/lib/mailman/icons;
+    }
+
+    location /pipermail {
+        alias /var/lib/mailman/archives/public;
+        autoindex on;
+    }
+
+    access_log /var/log/nginx/{{ mailman['lists_host'] }}.{{ grains['domain'] }}.access.log;
+    error_log /var/log/nginx/{{ mailman['lists_host'] }}.{{ grains['domain'] }}.error.log;
+}

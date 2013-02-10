@@ -4,6 +4,9 @@
 # of creating a new user completely automatic. Finally it adds the personal
 # web pages folder in the user's home folder.
 
+# Don't tolerate errors
+set -e
+
 # Default groups for a new user. 'user' should always be part of these!
 DEFAULT_GROUPS="user data"
 MEMBER_MAILINGLIST_NAME="{{ location['org_name'] }}-users"
@@ -56,8 +59,8 @@ chmod 2755 "/home/$USER_NAME/www-perso" || error
 chgrp www-data "/home/$USER_NAME/www-perso" || error
 echo "OK"
 
-echo "Reloading Apache Web Server for the www-perso configuration..."
-/etc/init.d/apache2 reload || error
+echo "Reloading Nginx Web Server for the www-perso configuration..."
+/etc/init.d/nginx reload || error
 
 USER_EMAIL=$(getent passwd "$USER_NAME" | sed 's/.*<//' | sed 's/>.*//')
 echo "Subscribing \"$USER_NAME\" to \"$MEMBER_MAILINGLIST_NAME\" mailinglist"

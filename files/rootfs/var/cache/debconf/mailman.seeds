@@ -1,0 +1,6 @@
+mailman mailman/gate_news boolean false
+mailman mailman/site_languages multiselect ar (Arabic), de (German), en (English), es (Spanish), fr (French), it (Italian)
+mailman mailman/queue_files_present select abort installation
+mailman mailman/used_languages string 
+mailman mailman/default_server_language select en (English)
+mailman mailman/create_site_list note

@@ -12,11 +12,11 @@ nginx-config.i : nginx-pkg.i nginx-files-clean.i
 	cp $(files_dir)/etc/nginx/nginx.conf /etc/nginx/nginx.conf
 	touch $@
 
-nginx-vhosts-config.i : nginx-config.i php.i
+nginx-vhosts-config.i : nginx-config.i php.i utils.i
 	$(jinja_run) $(scripts_dir)/setup-nginx-vhosts.jinja $(settings)
 	touch $@
 
-nginx-service.i : nginx-config.i nginx-vhosts-config.i openssl.i
+nginx-service.i : nginx-config.i nginx-vhosts-config.i openssl.i mailman-nginx-config.i
 	service nginx restart
 	touch $@
 

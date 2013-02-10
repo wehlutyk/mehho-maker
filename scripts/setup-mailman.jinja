@@ -1,0 +1,14 @@
+#!/bin/bash
+# Setup mailman site list
+
+# Don't tolerate errors
+set -e
+
+# Site list
+list_lists | grep -iE " +mailman" || yes | newlist mailman listsmaster@{{ grains['domain'] }} {{ mailman['sitelist_pass'] }}
+
+# Site pass
+mmsitepass {{ mailman['site_pass'] }}
+
+# Creator pass
+mmsitepass -c {{ mailman['creator_pass'] }}

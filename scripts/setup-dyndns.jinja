@@ -1,0 +1,26 @@
+#!/bin/bash
+# Setup dyndns
+
+# Don't tolerate errors
+set -e
+
+{%- for dyndomain, credentials in dyndns['domains'].iteritems() %}
+## Domain {{ dyndomain }}
+
+# Make temp settings
+TMP=$(tempfile)
+echo "dyndomain: {{ dyndomain }}" >> $TMP
+echo "server: {{ credentials['server'] }}" >> $TMP
+echo "username: {{ credentials['username'] }}" >> $TMP
+echo "password: {{ dyndns['credentials'][credentials['server']][credentials['username']] }}" >> $TMP
+
+# Create the update script
+scripts/jinja_copy files/rootfs/usr/local/bin/dyndns-update.jinja $TMP /usr/local/bin/dyndns-update_{{ dyndomain }}
+chmod 750 /usr/local/bin/dyndns-update_{{ dyndomain }}
+
+# Create the cron job
+echo "*/5 * * * * root /usr/local/bin/dyndns-update_{{ dyndomain }}" > /etc/cron.d/dyndns-update_{{ dyndomain }}
+
+# Clean up
+rm $TMP
+{% endfor %}
