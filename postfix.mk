@@ -25,7 +25,7 @@ ufw-allow-smtp2525.i : ufw-pkg.i
 	ufw status | grep -qE "2525 +ALLOW +Anywhere" || ufw allow 2525
 	touch $@
 
-postfix-service.i : postfix-pkg.i ufw-allow-smtp.i ufw-allow-smtp2525.i postfix-config.i postfix-newaliases.i mailman-postfix-transport.i
+postfix-service.i : postfix-pkg.i ufw-allow-smtp.i ufw-allow-smtp2525.i postfix-config.i postfix-newaliases.i mailman-postfix-transport.i email-filtering.i dovecot.i
 	service postfix restart
 	touch $@
 
