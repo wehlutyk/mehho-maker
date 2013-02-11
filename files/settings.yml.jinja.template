@@ -77,9 +77,6 @@ dyndns:
     {{ grains['domain'] }}:
       server: www.ovh.com
       username: {{ grains['domain'] }}-{{ grains['host'] }}
-    mail.{{ grains['domain'] }}:
-      server: www.ovh.com
-      username: {{ grains['domain'] }}-{{ grains['host'] }}
 
 # Dovecot
 dovecot:
