@@ -4,6 +4,9 @@
 # Don't tolerate errors
 set -e
 
+# Start clean
+rm -f /etc/cron.d/dyndns
+
 {%- for dyndomain, credentials in dyndns['domains'].iteritems() %}
 ## Domain {{ dyndomain }}
 
@@ -19,7 +22,7 @@ scripts/jinja_copy files/rootfs/usr/local/bin/dyndns-update.jinja $TMP /usr/loca
 chmod 750 /usr/local/bin/dyndns-update_{{ dyndomain }}
 
 # Create the cron job
-echo "*/5 * * * * root /usr/local/bin/dyndns-update_{{ dyndomain }}" > /etc/cron.d/dyndns-update_{{ dyndomain }}
+echo "*/5 * * * * root /usr/local/bin/dyndns-update_{{ dyndomain }}" >> /etc/cron.d/dyndns
 
 # Clean up
 rm $TMP
