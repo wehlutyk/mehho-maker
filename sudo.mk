@@ -3,6 +3,7 @@ sudo-pkg.i :
 	touch $@
 
 setup-sudoers.i : utils.i
+	mkdir -p /etc/sudoers.d
 	$(jinja_run) $(scripts_dir)/setup-sudoers.jinja $(settings)
 	touch $@
 
