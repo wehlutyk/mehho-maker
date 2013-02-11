@@ -1,0 +1,10 @@
+#!/bin/bash
+# Install tools for mehho-maker and launch setup
+
+echo "Installing requirements ..."
+apt-get -y install make git
+echo "Cloning repository ..."
+git clone https://github.com/wehlutyk/mehho-maker.git
+echo "Making ..."
+cd mehho-maker
+make
