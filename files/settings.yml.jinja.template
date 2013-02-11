@@ -19,7 +19,6 @@ location:
   # Timezone
   timezone: Europe/Paris
 
-
 # Credentials for special users
 users:
 
@@ -37,7 +36,6 @@ users:
     password: '$6$6M/InI47f1gac$8tY/GBdtEbuxAJUMwDX1P4RGkIEZTNeQwMc4E19klFTnzwwdkHqD0thhLHlGBtr8KGfu4y8IRS649OERnhiz70'
     sshkeys:
       - 'ssh-dss AAAAB3NzaC1kc3MAAACBANueq2n6PaUerqUVoTNfviXYWKIiJh/5QEphxkzQY6TrurZJP+qIJ8qUgeYvDhP0Zs9Gl18Zm1P/8x5y/REz6SPa4pUQ2+K+1VWewQJqnvlQSBibZlFoorn7hnMaLX/bLRqQcR7kR/TMWhnWw+DlVtlZGqx7acvEKSYQAo//kzuTAAAAFQCWVO1/cIPKPgl4rK91PfU+3XxbfQAAAIEAsV8seaYnd7FUeMvUcVH/YcHyJ0SvKNwFn7JhdSWQ/T1BIRSsea1++Eo2DIR0+K15Hxv9UGNMjI9MPxhOizFbffu2mDybyAAXeZBTTRkrCFvBI765FDqrI9jv2ljT2n/jFKk6NF07VY2/rJX6j7V7WD3KS3kVCtBnDGIEa2mHEWEAAACBAMBue3StYz7GqaeZfDvDSAikOeEBwu+oRU3fHi3hcj9MvXnRCmvIw85zILEhl58pr/lCQ93DZJetJgluTwyenK9dsx9oVWwdzN5u/tIm3PSfYMoHpG8hP1ZzutGwNJaA7H9eSSuzMTkWyqRdftEL9ifYegIJ4qcJlvnsYTjRIDaP sebastien@sebastien-laptop'
-
 
 # Sudo
 sudo:
@@ -84,3 +82,9 @@ dyndns:
 dovecot:
   cert: mail.{{ grains['domain'] }}-cacert.crt
   key: {{ grains['fqdn'] }}.key
+
+# Roundcube
+roundcube:
+  version: 0.8.5
+  vhost: {{ grains['domain'] }}
+  baseurl: /mail
