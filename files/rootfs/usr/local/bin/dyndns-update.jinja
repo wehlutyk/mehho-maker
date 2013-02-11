@@ -1,8 +1,5 @@
 #/bin/bash
 
-# Don't tolerate errors
-set -e
-
 USERNAME={{ username }}
 PASSWORD={{ password }}
 HOST={{ dyndomain }}
@@ -12,16 +9,24 @@ SERVER={{ server }}
 # Now for the actual work
 #
 
+HOST_IP=$(dig {{ dyndomain }} | grep "^{{ dyndomain }}" | awk '{ print $5 }')
 CURRENT_IP=$(wget -O - 'http://checkip.dyndns.org/' 2>/dev/null | sed -e 's/.*Address: \([^<]*\).*/\1/')
 
 if [ -f /tmp/ip_{{ dyndomain }} ]
 then
         OLD_IP=$(cat /tmp/ip_{{ dyndomain }})
-fi # # Don't update unless ip has changed #
+fi
 
-if [ "x"$CURRENT_IP = "x"$OLD_IP ]
+#
+# Don't update unless ip has changed or resolved ip is different from ours
+#
+
+if [ "x"${CURRENT_IP} = "x"${OLD_IP} ]
 then
-        exit
+  if [ "x"${HOST_IP} = "x"${CURRENT_IP} ]
+  then
+    exit
+  fi
 fi
 
 echo "IP changed from " $OLD_IP " to " $CURRENT_IP

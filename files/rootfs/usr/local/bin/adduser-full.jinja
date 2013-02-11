@@ -62,10 +62,10 @@ echo "OK"
 echo "Reloading Nginx Web Server for the www-perso configuration..."
 /etc/init.d/nginx reload || error
 
-USER_EMAIL=$(getent passwd "$USER_NAME" | sed 's/.*<//' | sed 's/>.*//')
-echo "Subscribing \"$USER_NAME\" to \"$MEMBER_MAILINGLIST_NAME\" mailinglist"
-echo "  with email \"$USER_EMAIL\"..."
-echo "$USER_EMAIL" | /usr/lib/mailman/bin/add_members -r - --welcome-msg=y --admin-notify=y "$MEMBER_MAILINGLIST_NAME" || error
+#USER_EMAIL=$(getent passwd "$USER_NAME" | sed 's/.*<//' | sed 's/>.*//')
+#echo "Subscribing \"$USER_NAME\" to \"$MEMBER_MAILINGLIST_NAME\" mailinglist"
+#echo "  with email \"$USER_EMAIL\"..."
+#echo "$USER_EMAIL" | /usr/lib/mailman/bin/add_members -r - --welcome-msg=y --admin-notify=y "$MEMBER_MAILINGLIST_NAME" || error
 
 echo
 echo "Checking groups with \"groups $USER_NAME\"..."

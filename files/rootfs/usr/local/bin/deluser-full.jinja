@@ -33,10 +33,10 @@ fi
 
 USER_NAME="$1"
 
-USER_EMAIL=$(getent passwd "$USER_NAME" | sed 's/.*<//' | sed 's/>.*//')
-echo "Unsubscribing \"$USER_NAME\" from \"$MEMBER_MAILINGLIST_NAME\"" 
-echo "  mailinglist (email: \"$USER_EMAIL\")..."
-/usr/lib/mailman/bin/remove_members "$MEMBER_MAILINGLIST_NAME" "$USER_EMAIL" || error
+#USER_EMAIL=$(getent passwd "$USER_NAME" | sed 's/.*<//' | sed 's/>.*//')
+#echo "Unsubscribing \"$USER_NAME\" from \"$MEMBER_MAILINGLIST_NAME\"" 
+#echo "  mailinglist (email: \"$USER_EMAIL\")..."
+#/usr/lib/mailman/bin/remove_members "$MEMBER_MAILINGLIST_NAME" "$USER_EMAIL" || error
 
 echo
 echo "Now deleting \"$USER_NAME\"..."

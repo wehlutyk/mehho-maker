@@ -47,11 +47,13 @@ RAWLIST=$(getent group user)
 L=$(echo ${RAWLIST##*:} | sed 's/,/ /g' | sed 's/sebadmin//')
 for u in $L
 do
-	FOLDER="/home/$u/www-perso"
+    HOMEFOLDER="/home/$u"
+	WWWFOLDER="/home/$u/www-perso"
 #	echo -n "   $FOLDER  ....  "
-	chmod u=rwx,g=rwxs,o=rx $FOLDER
-	chmod -R g=u,g+s $FOLDER
-	chown -R $u:www-data $FOLDER
+    chown $u:www-data $HOMEFOLDER
+	chmod u=rwx,g=rwxs,o=rx $WWWFOLDER
+	chmod -R g=u,g+s $WWWFOLDER
+	chown -R $u:www-data $WWWFOLDER
 #	echo "OK"
 done
 
