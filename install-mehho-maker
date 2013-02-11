@@ -1,10 +1,19 @@
 #!/bin/bash
 # Install tools for mehho-maker and launch setup
 
+echo
 echo "Installing requirements ..."
+echo
 apt-get -y install make git
+echo
 echo "Cloning repository ..."
+echo
 git clone https://github.com/wehlutyk/mehho-maker.git
-echo "Making ..."
+echo
+echo "Initializing settings ..."
+echo
 cd mehho-maker
-make
+cp files/settings.yml.jinja.template files/settings.yml.jinja
+echo
+echo "You can now customize your settings in 'files/settings.yml.jinja'."
+echo "Then run 'sudo make' in the root of the repository."
