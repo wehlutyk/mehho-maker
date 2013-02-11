@@ -19,7 +19,7 @@ then
         OLD_IP=$(cat /tmp/ip_{{ dyndomain }})
 fi # # Don't update unless ip has changed #
 
-if [ "x"$CURRENT_IP == "x"$OLD_IP ]
+if [ "x"$CURRENT_IP = "x"$OLD_IP ]
 then
         exit
 fi
