@@ -18,7 +18,8 @@ openssl-genkey.i : openssl-config.i
 	touch $@
 
 openssl-genselfcerts.i : openssl-genkey.i
-	cd /etc/ssl && ./genselfcerts
+	# Ignore errors here if the certs already exist
+	-cd /etc/ssl && ./genselfcerts
 	touch $@
 
 openssl.i : openssl-pkg.i openssl-config.i openssl-genkey.i openssl-genselfcerts.i

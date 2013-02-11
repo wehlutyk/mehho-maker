@@ -7,7 +7,12 @@ set -e
 # We assume the key has already been generated
 
 # Certificate for {{ grains['domain'] }}
-./gencsr << EOF
+if [ -f "/etc/ssl/certs/{{ grains['domain'] }}-cacert.crt" ]
+then
+  echo "File '/etc/ssl/certs/{{ grains['domain'] }}-cacert.crt' already exists!"
+  echo "Not overwriting it."
+else
+  ./gencsr << EOF
 
 
 
@@ -18,10 +23,17 @@ set -e
 
 
 EOF
-openssl x509 -req -days 365 -in {{ grains['fqdn'] }}.csr -signkey private/{{ grains['fqdn'] }}.key -out certs/{{ grains['domain'] }}-cacert.crt
-rm {{ grains['fqdn'] }}.csr
+  openssl x509 -req -days 365 -in {{ grains['fqdn'] }}.csr -signkey private/{{ grains['fqdn'] }}.key -out certs/{{ grains['domain'] }}-cacert.crt
+  rm {{ grains['fqdn'] }}.csr
+fi
 
 # Certificate for mail.{{ grains['domain'] }}
+if [ -f "/etc/ssl/certs/mail.{{ grains['domain'] }}-cacert.crt" ]
+then
+  echo "File '/etc/ssl/certs/mail.{{ grains['domain'] }}-cacert.crt' already exists!"
+  echo "Not overwriting it."
+  exit 1
+fi
 ./gencsr << EOF
 
 
