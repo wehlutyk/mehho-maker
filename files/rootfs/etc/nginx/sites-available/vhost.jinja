@@ -74,10 +74,10 @@ server {
         try_files $uri $uri/ /index.html /index.php @www-local;
         {%- else %}
         try_files $uri $uri/ /index.html /index.php =404;
-        {% endif %}
+        {%- endif %}
     }
 
-    {%- if ishomevhost %}
+    {% if ishomevhost -%}
     location @www-local {
         root /home/srv/www;
         autoindex on;

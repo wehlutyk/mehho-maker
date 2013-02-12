@@ -10,7 +10,7 @@ jinja_run := $(workon_jinja) && $(scripts_dir)/jinja_run
 jinja_copy := $(workon_jinja) && $(scripts_dir)/jinja_copy
 
 # Shortcuts
-apt_install := apt-get -qy install
+apt_install := apt-get -qy --force-yes install
 
 # System settings
 settings_jinja := files/settings.yml.jinja
