@@ -43,8 +43,9 @@ chgrp -R data $FOLDER
 #
 #echo
 #echo " Now doing personal web pages..."
-for f in $(ls /home/srv/www)
+for folder in $(ls /home/srv/www)
 do
+    f="/home/srv/www/$folder"
 #   echo -n "   $f ..."
     chmod u=rwx,g=rwxs,o= $f
     chmod -R g=u,g+s $f
