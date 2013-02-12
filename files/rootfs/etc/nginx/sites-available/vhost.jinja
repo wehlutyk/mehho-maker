@@ -1,109 +1,113 @@
 {% if ishomevhost -%}
 # Catch-all server
 server {
-	listen 80 default_server;
-	server_name _; # This is just an invalid value which will never trigger on a real hostname.
+    listen 80 default_server;
+    server_name _; # This is just an invalid value which will never trigger on a real hostname.
 
-	return 301 $scheme://{{ vhostname }}$request_uri;
+    return 301 $scheme://{{ vhostname }}$request_uri;
 
-	access_log /var/log/nginx/default.access.log;
-	error_log /var/log/nginx/default.error.log;
+    access_log /var/log/nginx/default.access.log;
+    error_log /var/log/nginx/default.error.log;
 
-	server_name_in_redirect off;
+    server_name_in_redirect off;
 }
 
 server {
-	listen 443 default_server;
-	server_name _; # This is just an invalid value which will never trigger on a real hostname.
+    listen 443 default_server;
+    server_name _; # This is just an invalid value which will never trigger on a real hostname.
 
-	ssl on;
-	ssl_certificate /etc/ssl/certs/{{ cert }};
-	ssl_certificate_key /etc/ssl/private/{{ key }};
+    ssl on;
+    ssl_certificate /etc/ssl/certs/{{ cert }};
+    ssl_certificate_key /etc/ssl/private/{{ key }};
 
-	ssl_session_timeout 5m;
+    ssl_session_timeout 5m;
 
-	ssl_protocols SSLv3 TLSv1;
-	ssl_ciphers HIGH:MEDIUM;
-	ssl_prefer_server_ciphers on;
+    ssl_protocols SSLv3 TLSv1;
+    ssl_ciphers HIGH:MEDIUM;
+    ssl_prefer_server_ciphers on;
 
-	return 301 $scheme://{{ vhostname }}$request_uri;
+    return 301 $scheme://{{ vhostname }}$request_uri;
 
-	access_log /var/log/nginx/default.access.log;
-	error_log /var/log/nginx/default.error.log;
+    access_log /var/log/nginx/default.access.log;
+    error_log /var/log/nginx/default.error.log;
 
-	server_name_in_redirect off;
+    server_name_in_redirect off;
 }
 {%- endif %}
 
 # HTTP server redirecting to HTTPS
 server {
-	listen   80;
-	server_name {{ vhostname }};
+    listen   80;
+    server_name {{ vhostname }};
 
-	return 301 https://{{ vhostname }}$request_uri;
+    return 301 https://{{ vhostname }}$request_uri;
 
-	access_log /var/log/nginx/{{ vhostname }}.access.log;
-	error_log /var/log/nginx/{{ vhostname }}.error.log;
+    access_log /var/log/nginx/{{ vhostname }}.access.log;
+    error_log /var/log/nginx/{{ vhostname }}.error.log;
 }
 
 # HTTPS server
 server {
-	listen   443;
-	server_name {{ vhostname }};
+    listen   443;
+    server_name {{ vhostname }};
 
-	root /var/www/{{ vhostname }};
-	index index.html index.php;
+    root /var/www/{{ vhostname }};
+    index index.html index.php;
 
-	ssl on;
-	ssl_certificate /etc/ssl/certs/{{ cert }};
-	ssl_certificate_key /etc/ssl/private/{{ key }};
+    ssl on;
+    ssl_certificate /etc/ssl/certs/{{ cert }};
+    ssl_certificate_key /etc/ssl/private/{{ key }};
 
-	ssl_session_timeout 5m;
+    ssl_session_timeout 5m;
 
-	ssl_protocols SSLv3 TLSv1;
-	ssl_ciphers HIGH:MEDIUM;
-	ssl_prefer_server_ciphers on;
+    ssl_protocols SSLv3 TLSv1;
+    ssl_ciphers HIGH:MEDIUM;
+    ssl_prefer_server_ciphers on;
 
-	access_log /var/log/nginx/{{ vhostname }}.access.log;
-	error_log /var/log/nginx/{{ vhostname }}.error.log;
+    access_log /var/log/nginx/{{ vhostname }}.access.log;
+    error_log /var/log/nginx/{{ vhostname }}.error.log;
 
-	location / {
-		# First attempt to serve request as file, then
-		# as directory, then fall back to index.html
-		try_files $uri $uri/ /index.html /index.php =404;
-	}
+    location / {
+        # First attempt to serve request as file, then
+        # as directory, then fall back to index.html
+        {% if ishomevhost -%}
+        try_files $uri $uri/ /index.html /index.php /home/srv/www/$uri /home/srv/www/$uri/ =404;
+        {%- else %}
+        try_files $uri $uri/ /index.html /index.php =404;
+        {% endif %}
+    }
 
-	#error_page 404 /404.html;
+    #error_page 404 /404.html;
 
-	# redirect server error pages to the static page /50x.html
-	#
-	#error_page 500 502 503 504 /50x.html;
-	#location = /50x.html {
-	#	root /usr/share/nginx/www;
-	#}
+    # redirect server error pages to the static page /50x.html
+    #
+    #error_page 500 502 503 504 /50x.html;
+    #location = /50x.html {
+    #    root /usr/share/nginx/www;
+    #}
 
-	# pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+    # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
 
-	location ~ \.php$ {
-		fastcgi_split_path_info ^(.+\.php)(/.+)$;
-		# NOTE: You should have "cgi.fix_pathinfo = 0;" in php.ini
+    location ~ \.php$ {
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        # NOTE: You should have "cgi.fix_pathinfo = 0;" in php.ini
 
-	#	# With php5-cgi alone:
-	#	fastcgi_pass 127.0.0.1:9000;
-		# With php5-fpm:
-		fastcgi_pass unix:/var/run/php5-fpm.sock;
-		fastcgi_index index.php;
-		include fastcgi_params;
-	}
+        # With php5-cgi alone:
+        #fastcgi_pass 127.0.0.1:9000;
+        # With php5-fpm:
+        fastcgi_pass unix:/var/run/php5-fpm.sock;
+        fastcgi_index index.php;
+        include fastcgi_params;
+    }
 
-	# deny access to .htaccess files, if Apache's document root
-	# concurs with nginx's one
+    # deny access to .htaccess files, if Apache's document root
+    # concurs with nginx's one
 
-	location ~ /\.ht {
-		deny all;
-	}
+    location ~ /\.ht {
+        deny all;
+    }
 
-	# additionnal config for the virtual host
-	
-	include /etc/nginx/{{ vhostname }}-conf.d/*;
+    # additionnal config for the virtual host
+
+    include /etc/nginx/{{ vhostname }}-conf.d/*;
 }
