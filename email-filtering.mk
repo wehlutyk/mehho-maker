@@ -5,7 +5,7 @@ email-filtering-pkg.i : postfix-pkg.i dovecot-pkg.i
 
 email-filtering-config.i : email-filtering-pkg.i utils.i
 	getent group clamav | sed 's/[^:]*://' | grep -q amavis || adduser amavis clamav
-	getent group amavis | sed 's/[^:]*://' | grep clamav || adduser clamav amavis
+	getent group amavis | sed 's/[^:]*://' | grep -q clamav || adduser clamav amavis
 	cp $(files_dir)/etc/amavis/conf.d/15-content_filter_mode /etc/amavis/conf.d/15-content_filter_mode
 	cp $(files_dir)/etc/amavis/conf.d/20-debian_defaults /etc/amavis/conf.d/20-debian_defaults
 	$(jinja_copy) $(files_dir)/etc/amavis/conf.d/50-user.jinja $(settings) /etc/amavis/conf.d/50-user
