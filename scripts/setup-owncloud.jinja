@@ -27,7 +27,7 @@ echo
 echo "=== Downloading and extracting owncloud ..."
 wget http://mirrors.owncloud.org/releases/owncloud-$OCVER.tar.bz2
 tar xjf owncloud-$OCVER.tar.bz2
-cp -r owncloud-$OCVER /var/www/{{ owncloud['vhost'] }}{{ owncloud['baseurl'] }}
+cp -r owncloud /var/www/{{ owncloud['vhost'] }}{{ owncloud['baseurl'] }}
 
 # Setup folders
 echo
