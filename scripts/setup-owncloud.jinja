@@ -32,7 +32,7 @@ cp -r owncloud /var/www/{{ owncloud['vhost'] }}{{ owncloud['baseurl'] }}
 # Setup folders
 echo
 echo "=== Setting up folders ..."
-mkdir /home/srv/owncloud/data
+mkdir -p /home/srv/owncloud/data
 ln -s /home/srv/owncloud/data /var/www/{{ owncloud['vhost'] }}{{ owncloud['baseurl'] }}/data
 chown -R www-data:www-data /home/srv/owncloud/data
 chown -R www-data:www-data /var/www/{{ owncloud['vhost'] }}{{ owncloud['baseurl'] }}/config
