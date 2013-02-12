@@ -5,7 +5,7 @@
 #    [folder]                [perms base]    [perms recurs]    [ownerships]
 #    /srv/stuff/data         2770            g+s               :data
 #    /srv/stuff/www-public   2775            go-x+rX,g+s       :data
-#    ~/www-perso             2775            g=u,g+s           ~:www-data
+#    /home/srv/www/*         2770            g=u,g+s           ~:www-data
 
 # Don't tolerate errors
 set -e
@@ -39,22 +39,17 @@ chgrp -R data $FOLDER
 
 
 #
-# [~/www-perso]
+# [/home/srv/www/*]
 #
 #echo
 #echo " Now doing personal web pages..."
-RAWLIST=$(getent group user)
-L=$(echo ${RAWLIST##*:} | sed 's/,/ /g' | sed 's/sebadmin//')
-for u in $L
+for f in $(ls /home/srv/www)
 do
-    HOMEFOLDER="/home/$u"
-	WWWFOLDER="/home/$u/www-perso"
-#	echo -n "   $FOLDER  ....  "
-    chown $u:www-data $HOMEFOLDER
-	chmod u=rwx,g=rwxs,o=rx $WWWFOLDER
-	chmod -R g=u,g+s $WWWFOLDER
-	chown -R $u:www-data $WWWFOLDER
-#	echo "OK"
+#   echo -n "   $f ..."
+    chmod u=rwx,g=rwxs,o= $f
+    chmod -R g=u,g+s $f
+    chgrp -R www-data $f
+#   echo "OK"
 done
 
 

@@ -38,10 +38,14 @@ deluser-full.i : utils.i group-user.i group-data.i
 	chmod 750 /usr/local/bin/deluser-full
 	touch $@
 
-setup-users.i : utils.i group-admin.i group-user.i group-data.i skel-folder.i
+srv-www-folder.i :
+	mkdir -p /home/srv/www
+	touch $@
+
+setup-users.i : utils.i group-admin.i group-user.i group-data.i skel-folder.i srv-www-folder.i
 	$(jinja_run) $(scripts_dir)/setup-users.jinja $(settings)
 	touch $@
 
-users.i : group-admin.i group-sshlogin.i group-sshnopwd.i group-user.i group-data.i disable-root.i skel-folder.i adduser-full.i deluser-full.i setup-users.i
+users.i : group-admin.i group-sshlogin.i group-sshnopwd.i group-user.i group-data.i disable-root.i skel-folder.i adduser-full.i deluser-full.i srv-www-folder.i setup-users.i
 	@echo "\n----- [info] users installed\n"
 	touch $@

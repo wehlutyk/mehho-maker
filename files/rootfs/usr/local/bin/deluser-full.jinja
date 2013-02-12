@@ -46,16 +46,23 @@ echo
 echo -n "Changing old home folder permissions... "
 chmod 700 "/home/$USER_NAME" || error
 chown root:root "/home/$USER_NAME" || error
+echo "OK"
+
+echo
+echo -n "Changing old www-perso folder permissions... "
+chmod 700 "/home/srv/www/$USER_NAME" || error
+chown root:root "/home/srv/www/$USER_NAME" || error
+echo "OK"
 
 echo
 echo "Reloading Nginx Web Server for www-perso configuration..."
 /etc/init.d/nginx reload || error
 
 echo
-echo "All good, now you can delete \"$USER_NAME\"'s old home folder with this command:"
+echo "All good, now you can delete \"$USER_NAME\"'s old home folder and"
+echo "www-perso folder with this command:"
 echo
-echo "     sudo rm -r /home/users/$USER_NAME"
+echo "     sudo rm -r /home/$USER_NAME && sudo rm -r /home/srv/www/$USER_NAME"
 echo
 
 exit $?
-

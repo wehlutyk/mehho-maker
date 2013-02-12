@@ -50,13 +50,12 @@ do
 done
 
 echo -n "Creating www-perso folder..."
-mkdir "/home/$USER_NAME/www-perso" || error
+mkdir "/home/srv/www/$USER_NAME" || error
 echo "OK"
 
-echo -n "Setting home folder permissions... "
-chgrp www-data "/home/$USER_NAME" || error
-chmod 2755 "/home/$USER_NAME/www-perso" || error
-chgrp www-data "/home/$USER_NAME/www-perso" || error
+echo -n "Setting www-perso folder permissions... "
+chown ${USER_NAME}:www-data "/home/srv/www/$USER_NAME" || error
+chmod 2755 "/home/srv/www/$USER_NAME" || error
 echo "OK"
 
 echo "Reloading Nginx Web Server for the www-perso configuration..."
@@ -76,4 +75,3 @@ echo "All went well, \"$USER_NAME\" is good to go."
 echo
 
 exit $?
-

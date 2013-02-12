@@ -16,7 +16,7 @@ nginx-vhosts-config.i : nginx-config.i php.i utils.i
 	$(jinja_run) $(scripts_dir)/setup-nginx-vhosts.jinja $(settings)
 	touch $@
 
-nginx-service.i : nginx-config.i nginx-vhosts-config.i openssl.i mailman-nginx-config.i
+nginx-service.i : nginx-config.i nginx-vhosts-config.i openssl.i mailman-nginx-config.i srv-www-folder.i
 	service nginx restart
 	touch $@
 
