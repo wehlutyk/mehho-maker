@@ -1,5 +1,5 @@
 utils-pkg.i :
-	$(apt_install) acpid build-essential byobu bzr checkinstall colordiff dcfldd debconf-utils debian-goodies deborphan dnsutils dstat etckeeper ethtool expect finger git htop ifstat iftop imagemagick iotop ipcalc iperf lsb-release mcrypt molly-guard mtr-tiny mutt nmap parted psmisc pwauth pwgen python-jinja2 python-pip python-virtualenv python-yaml rsync subversion sysstat tcpdump tree unrar-free unzip vim virtualenvwrapper zsh
+	$(apt_install) acpid autojump build-essential byobu bzr checkinstall colordiff dcfldd debconf-utils debian-goodies deborphan dnsutils dstat etckeeper ethtool expect finger git htop ifstat iftop imagemagick iotop ipcalc iperf lsb-release mcrypt molly-guard mtr-tiny mutt nmap parted psmisc pwauth pwgen python-jinja2 python-pip python-virtualenv python-yaml rsync subversion sysstat tcpdump tree unrar-free unzip vim virtualenvwrapper zsh
 	touch $@
 
 muttrc-config.i : utils-pkg.i
