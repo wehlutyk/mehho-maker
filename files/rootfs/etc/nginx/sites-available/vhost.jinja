@@ -70,12 +70,20 @@ server {
     location / {
         # First attempt to serve request as file, then
         # as directory, then fall back to index.html
-        {% if ishomevhost -%}
-        try_files $uri $uri/ /index.html /index.php /home/srv/www/$uri /home/srv/www/$uri/ =404;
+        {%- if ishomevhost %}
+        try_files $uri $uri/ /index.html /index.php @www-local;
         {%- else %}
         try_files $uri $uri/ /index.html /index.php =404;
         {% endif %}
     }
+
+    {%- if ishomevhost %}
+    location @www-local {
+        root /home/srv/www;
+        autoindex on;
+        try_files $uri $uri/ =404;
+    }
+    {%- endif %}
 
     #error_page 404 /404.html;
 
@@ -86,7 +94,7 @@ server {
     #    root /usr/share/nginx/www;
     #}
 
-    # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+    # pass the PHP scripts to php5-fpm
 
     location ~ \.php$ {
         fastcgi_split_path_info ^(.+\.php)(/.+)$;
