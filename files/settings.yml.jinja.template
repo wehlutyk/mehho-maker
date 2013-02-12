@@ -90,7 +90,7 @@ roundcube:
   baseurl: /mail
 
 # OwnCloud
-roundcube:
+owncloud:
   version: 4.5.6
   vhost: {{ grains['domain'] }}
   baseurl: /nuage
