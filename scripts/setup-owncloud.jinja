@@ -1,0 +1,48 @@
+#!/bin/bash
+# Setup owncloud
+
+# Don't tolerate errors
+set -e
+
+# Check that it's not already done
+if ls -l /var/www/{{ owncloud['vhost'] }} | grep {{ owncloud['baseurl'][1:] }}
+then
+  echo "OwnCloud already installed. Exiting."
+  exit 0
+fi
+
+OCVER="{{ owncloud['version'] }}"
+
+echo
+echo "This script is used by Salt to install owncloud from the tarball"
+echo "provided by owncloud.org."
+echo
+
+# Download and extract
+OLDWD=$(pwd)
+TMPD=$(mktemp -d)
+cd $TMPD
+
+echo
+echo "=== Downloading and extracting owncloud ..."
+wget http://mirrors.owncloud.org/releases/owncloud-$OCVER.tar.bz2
+tar xjf owncloud-$OCVER.tar.bz2
+cp -r owncloud-$OCVER /var/www/{{ owncloud['vhost'] }}{{ owncloud['baseurl'] }}
+
+# Setup folders
+echo
+echo "=== Setting up folders ..."
+mkdir /home/srv/owncloud/data
+ln -s /home/srv/owncloud/data /var/www/{{ owncloud['vhost'] }}{{ owncloud['baseurl'] }}/data
+chown -R www-data:www-data /home/srv/owncloud/data
+chown -R www-data:www-data /var/www/{{ owncloud['vhost'] }}{{ owncloud['baseurl'] }}/config
+chown -R www-data:www-data /var/www/{{ owncloud['vhost'] }}{{ owncloud['baseurl'] }}/apps
+
+# Clean up
+echo
+echo "=== Cleaning up ..."
+cd $OLDWD
+rm -rf $TMPD
+
+echo
+echo "Done setup."

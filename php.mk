@@ -1,5 +1,5 @@
 php-pkg.i :
-	$(apt_install) php5-fpm php-apc php5-gd php5-mcrypt php5-intl php5-pspell
+	$(apt_install) php5-fpm php-apc php5-gd php5-mcrypt php5-intl php5-pspell php-xml-parser
 	touch $@
 
 php5-fpm-config.i : php-pkg.i utils.i
