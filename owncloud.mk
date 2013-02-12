@@ -5,3 +5,7 @@ owncloud-pkg.i : utils.i php.i
 owncloud-setup.i : utils.i
 	$(jinja_run) $(scripts_dir)/setup-owncloud.jinja
 	touch $@
+
+owncloud.i : owncloud-pkg.i owncloud-setup.i
+	@echo "\n----- [info] owncloud installed\n"
+	touch $@
