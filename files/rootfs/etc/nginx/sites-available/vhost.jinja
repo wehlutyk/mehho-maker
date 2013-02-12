@@ -86,6 +86,36 @@ server {
     }
     {%- endif %}
 
+    {% if vhostname == owncloud['vhost'] -%}
+    #
+    # OwnCloud config
+    #
+    location {{ owncloud['baseurl'] }} {
+        try_files $uri $uri/ @webdav;
+    }
+
+    # owncloud WebDAV
+    location @webdav {
+        fastcgi_split_path_info ^(.+\.php)(/.*)$;
+        fastcgi_pass unix:/var/run/php5-fpm.sock;
+        fastcgi_index index.php;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    }
+
+    location ~ ^{{ owncloud['baseurl'] }}/(data|config|\.ht|db_structure\.xml|README) {
+        deny all;
+    }
+
+    location ~ ^{{ owncloud['baseurl'] }}/remote.php(/.*)$ {
+        fastcgi_split_path_info ^(.+\.php)(/.*)$;
+        fastcgi_pass unix:/var/run/php5-fpm.sock;
+        fastcgi_index index.php;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    }
+    {%- endif %}
+
     #error_page 404 /404.html;
 
     # redirect server error pages to the static page /50x.html
@@ -107,6 +137,7 @@ server {
         fastcgi_pass unix:/var/run/php5-fpm.sock;
         fastcgi_index index.php;
         include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
     }
 
     # deny access to .htaccess files, if Apache's document root

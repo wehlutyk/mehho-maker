@@ -20,6 +20,9 @@ echo "ishomevhost: False" >> $TMP
 {%- endif %}
 echo "cert: {{ props['cert'] }}" >> $TMP
 echo "key: {{ props['key'] }}" >> $TMP
+echo >> $TMP
+# Might create variable names collisions, but is simpler than a two-pass approach
+cat settings.yml.i >> $TMP
 
 # Create the vhosts config
 scripts/jinja_copy files/rootfs/etc/nginx/sites-available/vhost.jinja $TMP /etc/nginx/sites-available/{{ vhostname }}
