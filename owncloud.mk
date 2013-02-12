@@ -3,7 +3,7 @@ owncloud-pkg.i : utils.i php.i
 	touch $@
 
 owncloud-setup.i : utils.i
-	$(jinja_run) $(scripts_dir)/setup-owncloud.jinja
+	$(jinja_run) $(scripts_dir)/setup-owncloud.jinja $(settings)
 	touch $@
 
 owncloud.i : owncloud-pkg.i owncloud-setup.i
