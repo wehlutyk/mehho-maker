@@ -3,7 +3,7 @@ mailman-pkg.i : postfix-pkg.i utils.i nginx.i
 	touch $@
 
 mailman-config.i : mailman-pkg.i utils.i
-	# This reconfiguration needs to be done twice, since  with apt-get install
+	# This reconfiguration needs to be done twice, since with apt-get install
 	# not everything seems to be taken into account.
 	debconf-set-selections $(files_dir)/var/cache/debconf/mailman.seeds && dpkg-reconfigure -f noninteractive mailman
 	$(jinja_copy) $(files_dir)/etc/mailman/mm_cfg.py.jinja $(settings) /etc/mailman/mm_cfg.py
