@@ -31,6 +31,10 @@ wget http://downloads.sourceforge.net/project/roundcubemail/roundcubemail/$RCVER
 tar xzf roundcubemail-$RCVER.tar.gz
 cp -r roundcubemail-$RCVER /var/www/{{ roundcube['vhost'] }}{{ roundcube['baseurl'] }}
 
+wget http://www.tehinterweb.co.uk/roundcube/plugins/sieverules.tar.gz
+tar xzf sieverules.tar.gz
+cp -r sieverules /var/www/{{ roundcube['vhost'] }}{{ roundcube['baseurl'] }}/plugins/
+
 # Setup database
 echo
 echo "=== Initializing sqlite database ..."
@@ -73,6 +77,9 @@ DES_KEY=$(pwgen -sy 24 1 | tr \\\'\"%/ $(pwgen -s 30 1))
 cat $TMP | sed "s/'DES_KEY';$/'${DES_KEY}';/" > /var/www/{{ roundcube['vhost'] }}{{ roundcube['baseurl'] }}/config/main.inc.php
 chmod 640 /var/www/{{ roundcube['vhost'] }}{{ roundcube['baseurl'] }}/config/main.inc.php
 chown root:www-data /var/www/{{ roundcube['vhost'] }}{{ roundcube['baseurl'] }}/config/main.inc.php
+
+# sieverules config
+cp files/rootfs/var/www/roundcube-vhost/baseurl/plugins/sieverules/config.inc.php /var/www/roundcube-vhost/baseurl/plugins/sieverules/config.inc.php
 
 # Clean up
 rm $TMP
