@@ -79,7 +79,7 @@ chmod 640 /var/www/{{ roundcube['vhost'] }}{{ roundcube['baseurl'] }}/config/mai
 chown root:www-data /var/www/{{ roundcube['vhost'] }}{{ roundcube['baseurl'] }}/config/main.inc.php
 
 # sieverules config
-cp files/rootfs/var/www/roundcube-vhost/baseurl/plugins/sieverules/config.inc.php /var/www/roundcube-vhost/baseurl/plugins/sieverules/config.inc.php
+cp files/rootfs/var/www/roundcube-vhost/baseurl/plugins/sieverules/config.inc.php /var/www/{{ roundcube['vhost'] }}{{ roundcube['baseurl'] }}/plugins/sieverules/config.inc.php
 
 # Clean up
 rm $TMP
