@@ -51,6 +51,7 @@ done
 
 echo -n "Creating www-perso folder..."
 mkdir "/home/srv/www/$USER_NAME" || error
+ln -s "../srv/www/$USER_NAME" "/home/$USER_NAME/www-perso"
 echo "OK"
 
 echo -n "Setting www-perso and home folder permissions... "
