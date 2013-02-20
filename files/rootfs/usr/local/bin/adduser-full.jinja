@@ -53,9 +53,10 @@ echo -n "Creating www-perso folder..."
 mkdir "/home/srv/www/$USER_NAME" || error
 echo "OK"
 
-echo -n "Setting www-perso folder permissions... "
+echo -n "Setting www-perso and home folder permissions... "
 chown ${USER_NAME}:www-data "/home/srv/www/$USER_NAME" || error
 chmod 2755 "/home/srv/www/$USER_NAME" || error
+chmod 750 "/home/$USER_NAME" || error
 echo "OK"
 
 echo "Reloading Nginx Web Server for the www-perso configuration..."
