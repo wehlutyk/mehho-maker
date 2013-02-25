@@ -119,10 +119,7 @@ ssl = {
 -- server please see http://prosody.im/doc/modules/mod_auth_internal_hashed
 -- for information about using the hashed backend.
 
-authentication = "dovecot"
-
--- Path to the Dovecot auth socket
-dovecot_auth_socket = "/var/spool/prosody/private/auth"
+authentication = "cyrus"
 
 -- Select the storage backend to use. By default Prosody uses flat files
 -- in its configured data directory, but it also supports more backends

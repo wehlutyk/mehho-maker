@@ -22,7 +22,7 @@ ufw-allow-sieve.i : ufw-pkg.i
 	ufw status | grep -qE "4190 +ALLOW +Anywhere" || ufw allow 4190
 	touch $@
 
-dovecot-service.i : dovecot-pkg.i dovecot-config.i ufw-allow-imap.i ufw-allow-pop3.i ufw-allow-sieve.i email-filtering.i openssl.i prosody-config.i
+dovecot-service.i : dovecot-pkg.i dovecot-config.i ufw-allow-imap.i ufw-allow-pop3.i ufw-allow-sieve.i email-filtering.i openssl.i
 	service dovecot restart
 	touch $@
 
