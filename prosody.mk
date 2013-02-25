@@ -1,4 +1,4 @@
-prosody-pkg.i : sqlite.i
+prosody-pkg.i : sqlite.i sasl.i
 	$(apt_install) prosody lua-zlib lua-event lua-dbi-sqlite3 lua-cyrussasl
 	touch $@
 
@@ -16,7 +16,7 @@ ufw-allow-xmpp-s2s.i : ufw-pkg.i
 	ufw status | grep -qE "5269 +ALLOW +Anywhere" || ufw allow 5269
 	touch $@
 
-prosody-service.i : prosody-config.i ufw-allow-xmpp-c2s.i ufw-allow-xmpp-s2s.i openssl.i
+prosody-service.i : prosody-config.i ufw-allow-xmpp-c2s.i ufw-allow-xmpp-s2s.i openssl.i sasl-service.i
 	service prosody restart
 	touch $@
 
