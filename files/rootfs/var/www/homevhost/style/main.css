@@ -1,0 +1,59 @@
+/* general styles */
+html { margin: 0; padding: 0; }
+body { background: #FFFDF4; color: #000; margin: 0 auto 1em auto; padding: 1em 2em 0; font: 1em/1.7 sans-serif; /*border-bottom: 1px solid; */max-width: 80em; }
+:link { background: transparent; color: #00f; }
+:visited { background: transparent; color: #0e388c; }
+p { margin-top: 1.1em; margin-bottom: 1.1em; }
+
+/* More specifically */
+body { text-align: center; }
+
+/* Header */
+hgroup { margin: 0 0 1.5em; }
+h1 object { float: none; display: block; margin: 0 auto 0.25em; padding; 0; }
+h1 img { float: none; display: block; margin: 0 auto; padding: 0; }
+h1 { margin: 0; padding: 0; font-size: 2em; font-weight: bold; font-family: sans-serif; }
+h2 { font: inherit; margin: 0; padding: 0; font-style: italic; }
+
+/* Services */
+div.s { margin: 1em 2em; border: solid thick; text-align: center; display: inline-block; vertical-align: bottom; text-decoration: none; width: 18em; min-height: 7em; padding: 1em 1.4em; }
+div.s > span strong { font-size: 2em; font-style: normal; display: block; }
+div.s > span a strong { text-decoration: underline; }
+div.s > span a { color: #000; text-decoration: underline; }
+div.s > span { white-space: nowrap; text-decoration: none; }
+
+div.s                                              { color: black; background: #FFFF99; border-color: #FFFF00; }
+div.s + div.s                                          { color: black; background: #99FFFF; border-color: #00FFFF; }
+div.s + div.s + div.s                                      { color: black; background: #FF99CC; border-color: #FF0099; }
+div.s + div.s + div.s + div.s                                  { color: black; background: #99FF99; border-color: #00FF00; }
+div.s + div.s + div.s + div.s + div.s                              { color: black; background: #FF9999; border-color: #FF0000; }
+div.s + div.s + div.s + div.s + div.s + div.s                          { color: black; background: #99CCFF; border-color: #0099FF; }
+div.s + div.s + div.s + div.s + div.s + div.s + div.s                      { color: black; background: #CC99FF; border-color: #9900FF; }
+div.s + div.s + div.s + div.s + div.s + div.s + div.s + div.s                  { color: black; background: #FFCC99; border-color: #FF9900; }
+div.s + div.s + div.s + div.s + div.s + div.s + div.s + div.s + div.s              { color: black; background: #FF99FF; border-color: #FF00FF; }
+div.s + div.s + div.s + div.s + div.s + div.s + div.s + div.s + div.s + div.s          { color: black; background: #99FFCC; border-color: #00FF99; }
+div.s + div.s + div.s + div.s + div.s + div.s + div.s + div.s + div.s + div.s + div.s      { color: white; background: #999999; border-color: #000000; }
+div.s + div.s + div.s + div.s + div.s + div.s + div.s + div.s + div.s + div.s + div.s + div.s  { color: black; background: #CCFF99; border-color: #99FF00; }
+
+div.s {
+  border-radius: 5px;
+  -moz-box-shadow:    0 0 5px black;
+  -webkit-box-shadow: 0 0 30px black;
+  box-shadow:         0 0 5px black;
+  -moz-transition: text-shadow 1s linear;
+  -webkit-transition: text-shadow 1s linear;
+  transition: text-shadow 1s linear;
+}
+
+div.s:hover {
+  -moz-box-shadow:    0 0 25px black;
+  -webkit-box-shadow: 0 0 150px black;
+  box-shadow:         0 0 25px black;
+}
+
+
+/* Footer */
+div.footer { align: center; display: block; margin: 2em auto 1em; padding: 0; max-width: 50em; border-top: 1px solid; text-align: center; }
+/* Address */
+div.footer address { clear: both; margin: 0.5em auto 0; padding: 0; font-size: 0.8em; font-style: normal; }
+div.footer p.copyright { font-size: 0.8em; margin: 0 auto 2em; padding: 0; color: #999; }

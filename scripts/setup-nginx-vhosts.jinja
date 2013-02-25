@@ -30,4 +30,10 @@ ln -sf ../sites-available/{{ vhostname }} /etc/nginx/sites-enabled/{{ vhostname 
 
 # Clean up
 rm $TMP
+
+{%- if vhostname == grains['domain'] %}
+# Copy the html files for the home virtual host
+cp -r files/rootfs/var/www/homevhost /var/www/{{ vhostname }}
+{%- endif %}
+
 {%- endfor %}
