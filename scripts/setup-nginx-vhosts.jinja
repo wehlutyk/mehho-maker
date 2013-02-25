@@ -28,12 +28,15 @@ cat settings.yml.i >> $TMP
 scripts/jinja_copy files/rootfs/etc/nginx/sites-available/vhost.jinja $TMP /etc/nginx/sites-available/{{ vhostname }}
 ln -sf ../sites-available/{{ vhostname }} /etc/nginx/sites-enabled/{{ vhostname }}
 
-# Clean up
-rm $TMP
-
 {%- if vhostname == grains['domain'] %}
 # Copy the html files for the home virtual host
-cp -r files/rootfs/var/www/homevhost/* /var/www/{{ vhostname }}
+scripts/jinja_copy files/rootfs/var/www/homevhost/index.html.jinja $TMP /var/www/{{ vhostname }}/index.html
+cp files/rootfs/var/www/homevhost/*.css /var/www/{{ vhostname }}/
+cp files/rootfs/var/www/homevhost/*.png /var/www/{{ vhostname }}/
+cp files/rootfs/var/www/homevhost/*.ico /var/www/{{ vhostname }}/
 {%- endif %}
+
+# Clean up
+rm $TMP
 
 {%- endfor %}
