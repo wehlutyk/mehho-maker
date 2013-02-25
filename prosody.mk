@@ -18,7 +18,7 @@ ufw-allow-xmpp-s2s.i : ufw-pkg.i
 	ufw status | grep -qE "5269 +ALLOW +Anywhere" || ufw allow 5269
 	touch $@
 
-prosody-service.i : prosody-config.i ufw-allow-xmpp-c2s.i ufw-allow-xmpp-s2s.i
+prosody-service.i : prosody-config.i ufw-allow-xmpp-c2s.i ufw-allow-xmpp-s2s.i dovecot-service.i
 	service prosody restart
 	touch $@
 
