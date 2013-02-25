@@ -11,8 +11,8 @@ prosody-config.i : prosody-pkg.i
 	chmod 700 /var/spool/prosody/private
 	chown prosody /var/spool/prosody/private
 	# Dovecot auth module
-	ls /var/lib/prosody/modules/mod_auth_dovecot.lua || cd /var/lib/prosody/modules && wget http://prosody-modules.googlecode.com/hg/mod_auth_dovecot/auth_dovecot/mod_auth_dovecot.lua
-	ls /var/lib/prosody/modules/sasl_dovecot.lib.lua || cd /var/lib/prosody/modules && wget http://prosody-modules.googlecode.com/hg/mod_auth_dovecot/auth_dovecot/sasl_dovecot.lib.lua
+	ls -1 /var/lib/prosody/modules/ | grep -q mod_auth_dovecot.lua || cd /var/lib/prosody/modules && wget http://prosody-modules.googlecode.com/hg/mod_auth_dovecot/auth_dovecot/mod_auth_dovecot.lua
+	ls -1 /var/lib/prosody/modules/ | grep -q sasl_dovecot.lib.lua || cd /var/lib/prosody/modules && wget http://prosody-modules.googlecode.com/hg/mod_auth_dovecot/auth_dovecot/sasl_dovecot.lib.lua
 	touch $@
 
 ufw-allow-xmpp-c2s.i : ufw-pkg.i
