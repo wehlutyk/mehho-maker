@@ -6,7 +6,7 @@ ufw-default-deny.i : ufw-pkg.i
 	ufw status verbose | grep -q "[D]efault: deny (incoming), allow (outgoing)" || ufw default deny
 	touch $@
 
-ufw-enable.i : ufw-pkg.i ufw-default-deny.i ufw-allow-ssh.i ufw-allow-http.i ufw-allow-https.i ufw-allow-smtp.i ufw-allow-smtp2525.i ufw-allow-imap.i ufw-allow-smtp.i ufw-allow-sieve.i
+ufw-enable.i : ufw-pkg.i ufw-default-deny.i ufw-allow-ssh.i ufw-allow-http.i ufw-allow-https.i ufw-allow-smtp.i ufw-allow-smtp2525.i ufw-allow-imap.i ufw-allow-smtp.i ufw-allow-sieve.i ufw-allow-xmpp-c2s.i ufw-allow-xmpp-s2s.i
 	ufw status verbose | grep -q "[S]tatus: active" || yes | ufw enable
 	touch $@
 
