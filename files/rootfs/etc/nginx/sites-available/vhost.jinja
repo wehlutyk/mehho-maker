@@ -94,7 +94,7 @@ server {
         try_files $uri $uri/ @webdav;
     }
 
-    # owncloud WebDAV
+    # ownCloud WebDAV
     location @webdav {
         fastcgi_split_path_info ^(.+\.php)(/.*)$;
         fastcgi_pass unix:/var/run/php5-fpm.sock;
@@ -115,6 +115,15 @@ server {
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
     }
     {%- endif %}
+
+    {% if vhostname == prosody['vhost'] -%}
+    # Prosody BOSH proxy
+    location /http-bind/ {
+        proxy_pass  http://localhost:5280/http-bind/;
+        proxy_buffering off;
+        tcp_nodelay on;
+    }
+    {%- endir %}
 
     #error_page 404 /404.html;
 
