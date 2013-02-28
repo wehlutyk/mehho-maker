@@ -5,7 +5,7 @@
 set -e
 
 # Check that it's not already done
-if ls -l /var/www/{{ roundcube['vhost'] }} | grep {{ roundcube['baseurl'][1:] }}
+if ls -l /var/www/{{ grains['domain'] }} | grep {{ roundcube['baseurl'][1:] }}
 then
   echo "Roundcube already installed. Exiting."
   exit 0
@@ -29,16 +29,16 @@ echo
 echo "=== Downloading and extracting roundcube ..."
 wget http://downloads.sourceforge.net/project/roundcubemail/roundcubemail/$RCVER/roundcubemail-$RCVER.tar.gz
 tar xzf roundcubemail-$RCVER.tar.gz
-cp -r roundcubemail-$RCVER /var/www/{{ roundcube['vhost'] }}{{ roundcube['baseurl'] }}
+cp -r roundcubemail-$RCVER /var/www/{{ grains['domain'] }}{{ roundcube['baseurl'] }}
 
 wget http://www.tehinterweb.co.uk/roundcube/plugins/sieverules.tar.gz
 tar xzf sieverules.tar.gz
-cp -r sieverules /var/www/{{ roundcube['vhost'] }}{{ roundcube['baseurl'] }}/plugins/
+cp -r sieverules /var/www/{{ grains['domain'] }}{{ roundcube['baseurl'] }}/plugins/
 
 # Setup database
 echo
 echo "=== Initializing sqlite database ..."
-cd /var/www/{{ roundcube['vhost'] }}{{ roundcube['baseurl'] }}
+cd /var/www/{{ grains['domain'] }}{{ roundcube['baseurl'] }}
 mkdir db
 echo ".exit" | sqlite -init SQL/sqlite.initial.sql db/sqlite.db
 
@@ -62,28 +62,28 @@ echo "=== Setting up config and DES key ..."
 
 # db.inc.php.jinja
 echo "db.inc.php ..."
-scripts/jinja_copy files/rootfs/var/www/roundcube-vhost/baseurl/config/db.inc.php.jinja settings.yml.i /var/www/{{ roundcube['vhost'] }}{{ roundcube['baseurl'] }}/config/db.inc.php
-chmod 640 /var/www/{{ roundcube['vhost'] }}{{ roundcube['baseurl'] }}/config/db.inc.php
-chown root:www-data /var/www/{{ roundcube['vhost'] }}{{ roundcube['baseurl'] }}/config/db.inc.php
+scripts/jinja_copy files/rootfs/var/www/homevhost/roundcube/config/db.inc.php.jinja settings.yml.i /var/www/{{ grains['domain'] }}{{ roundcube['baseurl'] }}/config/db.inc.php
+chmod 640 /var/www/{{ grains['domain'] }}{{ roundcube['baseurl'] }}/config/db.inc.php
+chown root:www-data /var/www/{{ grains['domain'] }}{{ roundcube['baseurl'] }}/config/db.inc.php
 
 # First pass jinja for main.inc.php.jinja
 echo "main.inc.php first pass ..."
 TMP=$(tempfile)
-scripts/jinja_copy files/rootfs/var/www/roundcube-vhost/baseurl/config/main.inc.php.jinja settings.yml.i $TMP
+scripts/jinja_copy files/rootfs/var/www/homevhost/roundcube/config/main.inc.php.jinja settings.yml.i $TMP
 
 # Second pass for main.inc.php.jinja
 echo "main.inc.php second pass ..."
 DES_KEY=$(pwgen -sy 24 1 | tr \\\'\"%/ $(pwgen -s 30 1))
-cat $TMP | sed "s/'DES_KEY';$/'${DES_KEY}';/" > /var/www/{{ roundcube['vhost'] }}{{ roundcube['baseurl'] }}/config/main.inc.php
-chmod 640 /var/www/{{ roundcube['vhost'] }}{{ roundcube['baseurl'] }}/config/main.inc.php
-chown root:www-data /var/www/{{ roundcube['vhost'] }}{{ roundcube['baseurl'] }}/config/main.inc.php
+cat $TMP | sed "s/'DES_KEY';$/'${DES_KEY}';/" > /var/www/{{ grains['domain'] }}{{ roundcube['baseurl'] }}/config/main.inc.php
+chmod 640 /var/www/{{ grains['domain'] }}{{ roundcube['baseurl'] }}/config/main.inc.php
+chown root:www-data /var/www/{{ grains['domain'] }}{{ roundcube['baseurl'] }}/config/main.inc.php
 
 # sieverules config
-cp files/rootfs/var/www/roundcube-vhost/baseurl/plugins/sieverules/config.inc.php /var/www/{{ roundcube['vhost'] }}{{ roundcube['baseurl'] }}/plugins/sieverules/config.inc.php
+cp files/rootfs/var/www/homevhost/roundcube/plugins/sieverules/config.inc.php /var/www/{{ grains['domain'] }}{{ roundcube['baseurl'] }}/plugins/sieverules/config.inc.php
 
 # Clean up
 rm $TMP
-rm -r /var/www/{{ roundcube['vhost'] }}{{ roundcube['baseurl'] }}/installer
+rm -r /var/www/{{ grains['domain'] }}{{ roundcube['baseurl'] }}/installer
 
 echo
 echo "All done."

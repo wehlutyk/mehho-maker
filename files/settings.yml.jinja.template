@@ -86,7 +86,6 @@ dovecot:
 # Roundcube
 roundcube:
   version: 0.8.5
-  vhost: {{ grains['domain'] }}
   baseurl: /mail
 
 # OwnCloud
