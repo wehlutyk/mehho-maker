@@ -5,7 +5,7 @@
 set -e
 
 # Check that it's not already done
-if ls -l /var/www/{{ owncloud['vhost'] }} | grep {{ owncloud['baseurl'][1:] }}
+if ls -l /var/www/{{ grains['domain'] }} | grep {{ owncloud['baseurl'][1:] }}
 then
   echo "OwnCloud already installed. Exiting."
   exit 0
@@ -27,16 +27,16 @@ echo
 echo "=== Downloading and extracting owncloud ..."
 wget http://mirrors.owncloud.org/releases/owncloud-$OCVER.tar.bz2
 tar xjf owncloud-$OCVER.tar.bz2
-cp -r owncloud /var/www/{{ owncloud['vhost'] }}{{ owncloud['baseurl'] }}
+cp -r owncloud /var/www/{{ grains['domain'] }}{{ owncloud['baseurl'] }}
 
 # Setup folders
 echo
 echo "=== Setting up folders ..."
 mkdir -p /home/srv/owncloud/data
-ln -s /home/srv/owncloud/data /var/www/{{ owncloud['vhost'] }}{{ owncloud['baseurl'] }}/data
+ln -s /home/srv/owncloud/data /var/www/{{ grains['domain'] }}{{ owncloud['baseurl'] }}/data
 chown -R www-data:www-data /home/srv/owncloud/data
-chown -R www-data:www-data /var/www/{{ owncloud['vhost'] }}{{ owncloud['baseurl'] }}/config
-chown -R www-data:www-data /var/www/{{ owncloud['vhost'] }}{{ owncloud['baseurl'] }}/apps
+chown -R www-data:www-data /var/www/{{ grains['domain'] }}{{ owncloud['baseurl'] }}/config
+chown -R www-data:www-data /var/www/{{ grains['domain'] }}{{ owncloud['baseurl'] }}/apps
 
 # Clean up
 echo
