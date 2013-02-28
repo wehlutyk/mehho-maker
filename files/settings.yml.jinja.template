@@ -97,5 +97,4 @@ owncloud:
 prosody:
   cert: {{ grains['domain'] }}-cacert.crt
   key: {{ grains['fqdn'] }}.key
-  vhost: {{ grains['domain'] }}
   conference_host: conference

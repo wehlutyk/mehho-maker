@@ -157,7 +157,7 @@ log = {
 -- You need to add a VirtualHost entry for each domain you wish Prosody to serve.
 -- Settings under each VirtualHost entry apply *only* to that host.
 
-VirtualHost "{{ prosody['vhost'] }}"
+VirtualHost "{{ grains['domain'] }}"
 	-- enabled = false -- Remove this line to enable this host
 
 	-- Assign this host a certificate for TLS, otherwise it would use the one
@@ -175,7 +175,7 @@ VirtualHost "{{ prosody['vhost'] }}"
 -- For more information on components, see http://prosody.im/doc/components
 
 ---Set up a MUC (multi-user chat) room server on conference.example.com:
-Component "{{ prosody['conference_host'] }}.{{ prosody['vhost'] }}" "muc"
+Component "{{ prosody['conference_host'] }}.{{ grains['domain'] }}" "muc"
 	restrict_room_creation = "local"
 
 -- Set up a SOCKS5 bytestream proxy for server-proxied file transfers:
