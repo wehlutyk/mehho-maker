@@ -71,9 +71,9 @@ server {
         # First attempt to serve request as file, then
         # as directory, then fall back to index.html
         {%- if ishomevhost %}
-        try_files $uri $uri/ /index.html /index.php @www-local;
+        try_files $uri $uri/ @www-local;
         {%- else %}
-        try_files $uri $uri/ /index.html /index.php =404;
+        try_files $uri $uri/ /index.html =404;
         {%- endif %}
     }
 
