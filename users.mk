@@ -40,6 +40,7 @@ deluser-full.i : utils.i group-user.i group-data.i
 
 srv-www-folder.i :
 	mkdir -p /home/srv/www
+	mkdir -p /home/srv/www-conf.d
 	touch $@
 
 setup-users.i : utils.i group-admin.i group-user.i group-data.i skel-folder.i srv-www-folder.i

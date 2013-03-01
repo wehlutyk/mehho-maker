@@ -131,6 +131,7 @@ server {
         deny all;
     }
 
+    {% if ishomevhost -%}
     #
     # OwnCloud config
     #
@@ -165,8 +166,12 @@ server {
         proxy_buffering off;
         tcp_nodelay on;
     }
+    {%- endif %}
 
     # additionnal config for the virtual host
 
     include /etc/nginx/{{ vhostname }}-conf.d/*;
+    {% if ishomevhost -%}
+    include /home/srv/www-conf.d/*;
+    {%- endif %}
 }
