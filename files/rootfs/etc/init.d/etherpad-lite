@@ -49,8 +49,10 @@ stop() {
     sleep 0.5
    done
    rm /var/run/$NAME.pid
+   echo "done"
+  else
+   echo "no pid file found"
   fi
-  echo "done"
 }
 
 status() {
