@@ -31,7 +31,7 @@ etherpad-init.i : etherpad-config.i
 
 etherpad-sqlite3.i : etherpad-config.i sqlite.i
 	# Make sure sqlite3 dependency will work
-	cd /usr/share/etherpad-lite && sudo -u etherpad-lite npm install sqlite3
+	ls -1 /usr/share/etherpad-lite/node_modules | grep -q sqlite3 || (cd /usr/share/etherpad-lite && sudo -u etherpad-lite npm install sqlite3)
 	touch $@
 
 etherpad-service.i : etherpad-config.i etherpad-init.i etherpad-sqlite3.i
