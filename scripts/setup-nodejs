@@ -10,10 +10,16 @@ then
   exit
 fi
 
-TMP=$(tempfile -d)
+# Install
+TMP=$(mktemp -d)
 OLDWD=$(pwd)
 cd $TMP
+echo "Downloading nodejs package ..."
 wget https://github.com/itwars/nodejs-ARM/raw/master/nodejs_0.8.14~squeeze_armel.deb
+echo "Installing package ..."
 dpkg -i nodejs_0.8.14\~squeeze_armel.deb
+
+# Clean up
 cd $OLDWD
 rm -r $TMP
+echo "All done."
