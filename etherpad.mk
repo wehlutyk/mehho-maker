@@ -4,14 +4,15 @@ etherpad-pkg.i : utils-pkg.i
 	touch $@
 
 etherpad-user.i :
-	-adduser --system --home /usr/local/etherpad-lite --no-create-home --disabled-password --disabled-login etherpad-lite
+	getent passwd | grep -q "^etherpad-lite:" || adduser --system --group --home /usr/local/etherpad-lite --no-create-home --disabled-password --disabled-login etherpad-lite
 	touch $@
 
 etherpad-config.i : etherpad-user.i utils.i
-	mkdir /var/local/etherpad-lite
-	chown etherpad-lite:etherpad-lite /var/local/etherpad-lite
+	mkdir -p /var/local/etherpad-lite
+	chown -R etherpad-lite:etherpad-lite /var/local/etherpad-lite
 	$(jinja_copy) $(files_dir)/usr/local/etherpad-lite/settings.json.jinja $(settings) /usr/local/etherpad-lite/settings.json
-	# Add init script
+	chown -R etherpad-lite:etherpad-lite /usr/local/etherpad-lite
+	# Add init script and nginx config
 	touch $@
 
 etherpad.i : etherpad-pkg.i etherpad-config.i etherpad-user.i
