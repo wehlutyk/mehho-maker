@@ -1,6 +1,6 @@
 etherpad-pkg.i : utils-pkg.i
-	aptitude search "~i nodejs" | grep -q nodejs || wget https://github.com/itwars/nodejs-ARM/raw/master/nodejs_0.8.14~squeeze_armel.deb && dpkg -i nodejs_0.8.14\~squeeze_armel.deb && rm nodejs_0.8.14\~squeeze_armel.deb
-	-git clone https://github.com/ether/etherpad-lite.git /usr/local/etherpad-lite
+	aptitude search "~i nodejs" | grep -q nodejs || $(scripts_dir)/setup-nodejs
+	ls -1 /usr/local | grep -q etherpad-lite || git clone https://github.com/ether/etherpad-lite.git /usr/local/etherpad-lite
 	touch $@
 
 etherpad-user.i :
