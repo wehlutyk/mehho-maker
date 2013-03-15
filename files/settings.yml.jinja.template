@@ -93,6 +93,10 @@ owncloud:
   version: 4.5.6
   baseurl: /nuage
 
+# Etherpad
+etherpad:
+  baseurl: /pads
+
 # Prosody
 prosody:
   cert: {{ grains['domain'] }}-cacert.crt

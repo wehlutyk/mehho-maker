@@ -160,11 +160,27 @@ server {
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
     }
 
+    #
     # Prosody BOSH proxy
+    #
+
     location /http-bind/ {
         proxy_pass  http://localhost:5280/http-bind/;
         proxy_buffering off;
         tcp_nodelay on;
+    }
+
+    #
+    # Etherpad-lite proxy
+    #
+
+    location /pads {
+        rewrite                /pads/(.*) /$1 break;
+        rewrite                ^/pads$ /pads/ permanent; 
+        proxy_pass             http://localhost:9001/;
+        proxy_redirect         / /pads/;
+        proxy_set_header       Host $host;
+        proxy_buffering off;
     }
     {%- endif %}
 

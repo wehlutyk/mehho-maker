@@ -1,4 +1,4 @@
-mailman-pkg.i : postfix-pkg.i utils.i nginx.i
+mailman-pkg.i : postfix-pkg.i utils.i nginx-pkg.i
 	debconf-set-selections $(files_dir)/var/cache/debconf/mailman.seeds && $(apt_install) mailman
 	touch $@
 
