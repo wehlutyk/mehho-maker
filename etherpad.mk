@@ -35,7 +35,7 @@ etherpad-sqlite3.i : etherpad-config.i sqlite.i
 	touch $@
 
 etherpad-service.i : etherpad-config.i etherpad-init.i etherpad-sqlite3.i
-	service etherpad-lite start
+	service etherpad-lite restart
 	touch $@
 
 etherpad.i : etherpad-pkg.i etherpad-config.i etherpad-sqlite3.i etherpad-user.i etherpad-init.i etherpad-service.i
