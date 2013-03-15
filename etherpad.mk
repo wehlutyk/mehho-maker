@@ -21,7 +21,6 @@ etherpad-config.i : etherpad-user.i utils.i
 	mkdir -p /etc/etherpad-lite
 	$(jinja_copy) $(files_dir)/etc/etherpad-lite/settings.json.jinja $(settings) /etc/etherpad-lite/settings.json
 	ls /usr/share/etherpad-lite/settings.json || ln -s /etc/etherpad-lite/settings.json /usr/share/etherpad-lite/settings.json
-	# Add nginx config
 	touch $@
 
 etherpad-init.i : etherpad-config.i
@@ -32,7 +31,7 @@ etherpad-init.i : etherpad-config.i
 
 etherpad-sqlite3.i : etherpad-config.i sqlite.i
 	# Make sure sqlite3 dependency will work
-	cd /usr/local/etherpad-lite && sudo -u etherpad-lite npm install sqlite3
+	cd /usr/share/etherpad-lite && sudo -u etherpad-lite npm install sqlite3
 	touch $@
 
 etherpad-service.i : etherpad-config.i etherpad-init.i etherpad-sqlite3.i
