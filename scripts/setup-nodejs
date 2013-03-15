@@ -1,0 +1,19 @@
+#!/bin/bash
+# Download and install nodejs
+
+# Don't tolerate errors
+set -e
+
+if aptitude search "~i nodejs" | grep -q nodejs
+then
+  echo "Nodejs already installed. Exiting."
+  exit
+fi
+
+TMP=$(tempfile -d)
+OLDWD=$(pwd)
+cd $TMP
+wget https://github.com/itwars/nodejs-ARM/raw/master/nodejs_0.8.14~squeeze_armel.deb
+dpkg -i nodejs_0.8.14\~squeeze_armel.deb
+cd $OLDWD
+rm -r $TMP
