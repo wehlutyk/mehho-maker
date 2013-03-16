@@ -11,8 +11,8 @@ etherpad-config.i : etherpad-user.i utils.i
 	# Update safeRun.sh script
 	sed -i 's/^EMAIL_ADDRESS=.*$$/EMAIL_ADDRESS="root@localhost"/' /usr/share/etherpad-lite/bin/safeRun.sh
 	# Create data folder
-	mkdir -p /var/local/etherpad-lite
-	chown -R etherpad-lite:etherpad-lite /var/local/etherpad-lite
+	mkdir -p /home/srv/etherpad-lite
+	chown -R etherpad-lite:etherpad-lite /home/srv/etherpad-lite
 	# Add log folder
 	mkdir -p /var/log/etherpad-lite
 	chown -R etherpad-lite:etherpad-lite /var/log/etherpad-lite
