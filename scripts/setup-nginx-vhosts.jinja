@@ -31,6 +31,7 @@ ln -sf ../sites-available/{{ vhostname }} /etc/nginx/sites-enabled/{{ vhostname 
 {%- if vhostname == grains['domain'] %}
 # Copy the html files for the home virtual host
 scripts/jinja_copy files/rootfs/var/www/homevhost/index.html.jinja $TMP /var/www/{{ vhostname }}/index.html
+cp files/rootfs/var/www/homevhost/*.php /var/www/{{ vhostname }}/
 cp files/rootfs/var/www/homevhost/*.css /var/www/{{ vhostname }}/
 cp files/rootfs/var/www/homevhost/*.png /var/www/{{ vhostname }}/
 cp files/rootfs/var/www/homevhost/*.ico /var/www/{{ vhostname }}/
