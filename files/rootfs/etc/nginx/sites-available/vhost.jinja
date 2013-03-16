@@ -177,6 +177,17 @@ server {
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
     }
 
+    location ~ ^(?<script_name>.+?\.php)(?<path_info>/.*)?$ {
+        try_files $script_name = 404;
+
+        include fastcgi_params;
+        client_max_body_size 1G; # set max upload size
+        fastcgi_buffers 64 4K;
+        fastcgi_param PATH_INFO $path_info;
+        fastcgi_param HTTPS on;
+        fastcgi_pass unix:/var/run/php5-fpm.sock;
+    }
+
     location ~* ^{{ owncloud['baseurl'] }}.+.(jpg|jpeg|gif|bmp|ico|png|css|js|swf)$ {
         expires 30d;
         # Optional: Don't log access to assets
