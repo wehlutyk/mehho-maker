@@ -72,6 +72,10 @@ server {
         # as directory, then fall back to index.html
         {%- if ishomevhost %}
         try_files $uri $uri/ @www-local;
+        rewrite ^/.well-known/host-meta {{ owncloud['baseurl'] }}/public.php?service=host-meta last;
+        rewrite ^/.well-known/host-meta.json {{ owncloud['baseurl'] }}/public.php?service=host-meta-json last;
+        rewrite ^/.well-known/carddav {{ owncloud['baseurl'] }}/remote.php/carddav/ redirect;
+        rewrite ^/.well-known/caldav {{ owncloud['baseurl'] }}/remote.php/caldav/ redirect;
         {%- else %}
         try_files $uri $uri/ =404;
         {%- endif %}
@@ -135,12 +139,23 @@ server {
     #
     # OwnCloud config
     #
+
     location {{ owncloud['baseurl'] }} {
+        rewrite ^{{ owncloud['baseurl'] }}/caldav((/|$).*)$ {{ owncloud['baseurl'] }}/remote.php/caldav$1 last;
+        rewrite ^{{ owncloud['baseurl'] }}/carddav((/|$).*)$ {{ owncloud['baseurl'] }}/remote.php/carddav$1 last;
+        rewrite ^{{ owncloud['baseurl'] }}/webdav((/|$).*)$ {{ owncloud['baseurl'] }}/remote.php/webdav$1 last;
+        rewrite ^({{ owncloud['baseurl'] }}/core/doc/[^\/]+/)$ $1/index.html;
+
+        error_page 403 = {{ owncloud['baseurl'] }}/core/templates/403.php;
+        error_page 404 = {{ owncloud['baseurl'] }}/core/templates/404.php;
+
         try_files $uri $uri/ @webdav;
     }
 
     # ownCloud WebDAV
     location @webdav {
+        client_max_body_size 1G; # set max upload size
+        fastcgi_buffers 64 4K;
         fastcgi_split_path_info ^(.+\.php)(/.*)$;
         fastcgi_pass unix:/var/run/php5-fpm.sock;
         fastcgi_index index.php;
@@ -153,11 +168,19 @@ server {
     }
 
     location ~ ^{{ owncloud['baseurl'] }}/remote.php(/.*)$ {
+        client_max_body_size 1G; # set max upload size
+        fastcgi_buffers 64 4K;
         fastcgi_split_path_info ^(.+\.php)(/.*)$;
         fastcgi_pass unix:/var/run/php5-fpm.sock;
         fastcgi_index index.php;
         include fastcgi_params;
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    }
+
+    location ~* ^{{ owncloud['baseurl'] }}.+.(jpg|jpeg|gif|bmp|ico|png|css|js|swf)$ {
+        expires 30d;
+        # Optional: Don't log access to assets
+        access_log off;
     }
 
     #
