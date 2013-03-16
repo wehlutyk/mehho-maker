@@ -67,15 +67,20 @@ server {
     access_log /var/log/nginx/{{ vhostname }}.access.log;
     error_log /var/log/nginx/{{ vhostname }}.error.log;
 
+    #########################################################################
+    # Root location
+    #########################################################################
+
     location / {
         # First attempt to serve request as file, then
         # as directory, then fall back to index.html
         {%- if ishomevhost %}
-        try_files $uri $uri/ @www-local;
         rewrite ^/.well-known/host-meta {{ owncloud['baseurl'] }}/public.php?service=host-meta last;
         rewrite ^/.well-known/host-meta.json {{ owncloud['baseurl'] }}/public.php?service=host-meta-json last;
         rewrite ^/.well-known/carddav {{ owncloud['baseurl'] }}/remote.php/carddav/ redirect;
         rewrite ^/.well-known/caldav {{ owncloud['baseurl'] }}/remote.php/caldav/ redirect;
+
+        try_files $uri $uri/ @www-local;
         {%- else %}
         try_files $uri $uri/ =404;
         {%- endif %}
@@ -84,61 +89,18 @@ server {
     {% if ishomevhost -%}
     location @www-local {
         root /home/srv/www;
+
+        try_files $uri $uri/ =404;
+
         autoindex on;
         autoindex_exact_size off;
-        try_files $uri $uri/ =404;
-    }
-
-    location @www-local-php {
-        root /home/srv/www;
-        try_files $uri $uri/ =404;
-        fastcgi_pass unix:/var/run/php5-fpm.sock;
-        fastcgi_index index.php;
-        include fastcgi_params;
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
     }
     {%- endif %}
 
-    #error_page 404 /404.html;
-
-    # redirect server error pages to the static page /50x.html
-    #
-    #error_page 500 502 503 504 /50x.html;
-    #location = /50x.html {
-    #    root /usr/share/nginx/www;
-    #}
-
-    # pass the PHP scripts to php5-fpm
-
-    location ~ \.php$ {
-        {%- if ishomevhost %}
-        try_files $uri $uri/ @www-local-php;
-        {%- else %}
-        try_files $uri $uri/ =404;
-        {%- endif %}
-        fastcgi_split_path_info ^(.+\.php)(/.+)$;
-        # NOTE: You should have "cgi.fix_pathinfo = 0;" in php.ini
-
-        # With php5-cgi alone:
-        #fastcgi_pass 127.0.0.1:9000;
-        # With php5-fpm:
-        fastcgi_pass unix:/var/run/php5-fpm.sock;
-        fastcgi_index index.php;
-        include fastcgi_params;
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-    }
-
-    # deny access to .htaccess files, if Apache's document root
-    # concurs with nginx's one
-
-    location ~ /\.ht {
-        deny all;
-    }
-
     {% if ishomevhost -%}
-    #
-    # OwnCloud config
-    #
+    #########################################################################
+    # ownCloud
+    #########################################################################
 
     location {{ owncloud['baseurl'] }} {
         rewrite ^{{ owncloud['baseurl'] }}/caldav((/|$).*)$ {{ owncloud['baseurl'] }}/remote.php/caldav$1 last;
@@ -146,47 +108,41 @@ server {
         rewrite ^{{ owncloud['baseurl'] }}/webdav((/|$).*)$ {{ owncloud['baseurl'] }}/remote.php/webdav$1 last;
         rewrite ^({{ owncloud['baseurl'] }}/core/doc/[^\/]+/)$ $1/index.html;
 
+        try_files $uri $uri/ index.php;
+
         error_page 403 = {{ owncloud['baseurl'] }}/core/templates/403.php;
         error_page 404 = {{ owncloud['baseurl'] }}/core/templates/404.php;
-
-        try_files $uri $uri/ @webdav;
-    }
-
-    # ownCloud WebDAV
-    location @webdav {
-        client_max_body_size 1G; # set max upload size
-        fastcgi_buffers 64 4K;
-        fastcgi_split_path_info ^(.+\.php)(/.*)$;
-        fastcgi_pass unix:/var/run/php5-fpm.sock;
-        fastcgi_index index.php;
-        include fastcgi_params;
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
     }
 
     location ~ ^{{ owncloud['baseurl'] }}/(data|config|\.ht|db_structure\.xml|README) {
         deny all;
     }
 
-    location ~ ^(?<script_name>.+?\.php)(?<path_info>/.*)?$ {
-        try_files $script_name = 404;
-
-        include fastcgi_params;
+    location ~ ^{{ owncloud['baseurl'] }}(?<script_name>.+?\.php)(?<path_info>/.*)?$ {
         client_max_body_size 1G; # set max upload size
-        fastcgi_buffers 64 4K;
-        fastcgi_param PATH_INFO $path_info;
-        fastcgi_param HTTPS on;
+
         fastcgi_pass unix:/var/run/php5-fpm.sock;
+        fastcgi_buffers 64 4K;
+        include fastcgi_params;
+        fastcgi_param PATH_INFO $path_info;
+
+        try_files {{ owncloud['baseurl'] }}$script_name = 404;
+
+        error_page 403 = {{ owncloud['baseurl'] }}/core/templates/403.php;
+        error_page 404 = {{ owncloud['baseurl'] }}/core/templates/404.php;
     }
 
     location ~* ^{{ owncloud['baseurl'] }}.+.(jpg|jpeg|gif|bmp|ico|png|css|js|swf)$ {
         expires 30d;
-        # Optional: Don't log access to assets
         access_log off;
+
+        error_page 403 = {{ owncloud['baseurl'] }}/core/templates/403.php;
+        error_page 404 = {{ owncloud['baseurl'] }}/core/templates/404.php;
     }
 
-    #
+    #########################################################################
     # Prosody BOSH proxy
-    #
+    #########################################################################
 
     location /http-bind/ {
         proxy_pass  http://localhost:5280/http-bind/;
@@ -194,9 +150,9 @@ server {
         tcp_nodelay on;
     }
 
-    #
+    #########################################################################
     # Etherpad-lite proxy
-    #
+    #########################################################################
 
     location /pads {
         rewrite                /pads/(.*) /$1 break;
@@ -208,7 +164,65 @@ server {
     }
     {%- endif %}
 
-    # additionnal config for the virtual host
+    #########################################################################
+    # PHP
+    #########################################################################
+
+    location ~ \.php$ {
+        {%- if ishomevhost %}
+        try_files $uri $uri/ @www-local-php;
+        {%- else %}
+        try_files $uri $uri/ =404;
+        {%- endif %}
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        # NOTE: You should have "cgi.fix_pathinfo = 0;" in php.ini
+
+        fastcgi_pass unix:/var/run/php5-fpm.sock;
+        fastcgi_index index.php;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    }
+
+    {% if ishomevhost -%}
+    location @www-local-php {
+        root /home/srv/www;
+
+        try_files $uri $uri/ =404;
+
+        fastcgi_pass unix:/var/run/php5-fpm.sock;
+        fastcgi_index index.php;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    }
+    {%- endif %}
+
+    #########################################################################
+    # Error pages
+    #########################################################################
+
+    #error_page 404 /404.html;
+
+    # redirect server error pages to the static page /50x.html
+    #
+    #error_page 500 502 503 504 /50x.html;
+    #location = /50x.html {
+    #    root /usr/share/nginx/www;
+    #}
+
+    #########################################################################
+    # Security
+    #########################################################################
+
+    # deny access to .htaccess files, if Apache's document root
+    # concurs with nginx's one
+
+    location ~ /\.ht {
+        deny all;
+    }
+
+    #########################################################################
+    # Additionnal config for the virtual host
+    #########################################################################
 
     include /etc/nginx/{{ vhostname }}-conf.d/*;
     {% if ishomevhost -%}
