@@ -17,6 +17,7 @@ h2 { font: inherit; margin: 0; padding: 0; font-style: italic; }
 
 /* Services */
 div.s { margin: 1em 2em; border: solid thick; text-align: center; display: inline-block; vertical-align: bottom; text-decoration: none; width: 18em; min-height: 7em; padding: 1em 1.4em; }
+div.ss { margin: 1em 2em; border: solid thick; text-align: center; display: inline-block; vertical-align: bottom; text-decoration: none; width: 12em; min-height: 1em; padding: 1em 1.4em; }
 div.s > span strong { font-size: 2em; font-style: normal; display: block; }
 div.s > span a strong { text-decoration: underline; }
 div.s > span a { color: #000; text-decoration: underline; }
