@@ -47,6 +47,12 @@ etherpad-plugins.i : etherpad-config.i etherpad-sqlite3.i
 	ls -1 /usr/share/etherpad-lite/node_modules | grep -q ep_linkify || (cd /usr/share/etherpad-lite && sudo -u etherpad-lite npm install ep_linkify)
 	# ep_page_view
 	ls -1 /usr/share/etherpad-lite/node_modules | grep -q ep_page_view || (cd /usr/share/etherpad-lite && sudo -u etherpad-lite npm install ep_page_view)
+	# ep_pubmed
+	ls -1 /usr/share/etherpad-lite/node_modules | grep -q ep_pubmed || (cd /usr/share/etherpad-lite && sudo -u etherpad-lite npm install ep_pubmed)
+	# ep_headings
+	ls -1 /usr/share/etherpad-lite/node_modules | grep -q ep_headings || (cd /usr/share/etherpad-lite && sudo -u etherpad-lite npm install ep_headings)
+	# ep_historicalsearch
+	ls -1 /usr/share/etherpad-lite/node_modules | grep -q ep_historicalsearch || (cd /usr/share/etherpad-lite && sudo -u etherpad-lite npm install ep_historicalsearch)
 	touch $@
 
 etherpad-service.i : etherpad-config.i etherpad-init.i etherpad-sqlite3.i etherpad-plugins.i
