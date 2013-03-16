@@ -37,6 +37,10 @@ etherpad-sqlite3.i : etherpad-config.i sqlite.i
 etherpad-plugins.i : etherpad-config.i etherpad-sqlite3.i
 	# ep_adminpads
 	ls -1 /usr/share/etherpad-lite/node_modules | grep -q ep_adminpads || (cd /usr/share/etherpad-lite && sudo -u etherpad-lite npm install ep_adminpads)
+	# ep_doi
+	ls -1 /usr/share/etherpad-lite/node_modules | grep -q ep_doi || (cd /usr/share/etherpad-lite && sudo -u etherpad-lite npm install ep_doi)
+	# ep_help_bubbles
+	ls -1 /usr/share/etherpad-lite/node_modules | grep -q ep_help_bubbles || (cd /usr/share/etherpad-lite && sudo -u etherpad-lite npm install ep_help_bubbles)
 	touch $@
 
 etherpad-service.i : etherpad-config.i etherpad-init.i etherpad-sqlite3.i etherpad-plugins.i
