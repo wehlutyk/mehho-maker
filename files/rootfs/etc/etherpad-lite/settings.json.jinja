@@ -104,17 +104,6 @@
   "socketTransportProtocols" : ["xhr-polling", "jsonp-polling", "htmlfile"],
 
   // Plugins ----------------------------------------------------------
-  // ep_email_notifications
-  "ep_email_notifications" : {
-    checkFrequency: 6000, // checkFrequency = How frequently(milliseconds) to check for pad updates -- Move me to the settings file
-    staleTime: 30000,  // staleTime = How stale(milliseconds) does a pad need to be before notifying subscribers?  Move me to settings
-    fromName: "{{ location['org_name'] }} Pads",
-    fromEmail: "pads@{{ grains['domain'] }}",
-    urlToPads: "https://{{ grains['domain'] }}{{ etherpad['baseurl'] }}/p/", // urlToPads = The URL to your pads note the trailing /
-    emailServer: { // See https://github.com/eleith/emailjs for settings
-      host: "127.0.0.1"
-    }
-  },
 
   // ep_page_view
   "ep_page_view_default": true
