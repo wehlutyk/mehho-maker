@@ -53,7 +53,7 @@ foreach ($dir_it as $file) {
 ?>
 
   <div class="footer">
-   <address>Queries should be directed to <a href="mailto:info [at] mehho [dot] net">info [at] mehho [dot] net</a>.</address>
+   <address>Queries should be directed to <a href="mailto:hello [at] mehho [dot] net">hello [at] mehho [dot] net</a>.</address>
    <p class="copyright">&copy; 2011-2013 S&eacutebastien Lerique. Design inspired from the <a href="http://www.whatwg.org/">WHATWG</a> website, thank you to them :).</p>
   </div>
 
