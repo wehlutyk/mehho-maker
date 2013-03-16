@@ -45,6 +45,8 @@ etherpad-plugins.i : etherpad-config.i etherpad-sqlite3.i
 	ls -1 /usr/share/etherpad-lite/node_modules | grep -q ep_previewimages || (cd /usr/share/etherpad-lite && sudo -u etherpad-lite npm install ep_previewimages)
 	# ep_linkify
 	ls -1 /usr/share/etherpad-lite/node_modules | grep -q ep_linkify || (cd /usr/share/etherpad-lite && sudo -u etherpad-lite npm install ep_linkify)
+	# ep_email_notifications
+	ls -1 /usr/share/etherpad-lite/node_modules | grep -q ep_email_notifications || (cd /usr/share/etherpad-lite && sudo -u etherpad-lite npm install ep_email_notifications)
 	touch $@
 
 etherpad-service.i : etherpad-config.i etherpad-init.i etherpad-sqlite3.i etherpad-plugins.i
