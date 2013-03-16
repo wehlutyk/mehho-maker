@@ -25,7 +25,7 @@ cd $TMPD
 
 echo
 echo "=== Downloading and extracting owncloud ..."
-wget http://mirrors.owncloud.org/releases/owncloud-$OCVER.tar.bz2
+wget http://download.owncloud.org/community/owncloud-$OCVER.tar.bz2
 tar xjf owncloud-$OCVER.tar.bz2
 cp -r owncloud /var/www/{{ grains['domain'] }}{{ owncloud['baseurl'] }}
 
