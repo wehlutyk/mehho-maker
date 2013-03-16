@@ -34,10 +34,15 @@ etherpad-sqlite3.i : etherpad-config.i sqlite.i
 	ls -1 /usr/share/etherpad-lite/node_modules | grep -q sqlite3 || (cd /usr/share/etherpad-lite && sudo -u etherpad-lite npm install sqlite3)
 	touch $@
 
-etherpad-service.i : etherpad-config.i etherpad-init.i etherpad-sqlite3.i
+etherpad-plugins.i : etherpad-config.i etherpad-sqlite3.i
+	# ep_iframeinsert
+	ls -1 /usr/share/etherpad-lite/node_modules | grep -q ep_iframeinsert || (cd /usr/share/etherpad-lite/node_modules && sudo -u etherpad-lite git clone https://github.com/michael-dev/ep_iframeinsert.git)
+	touch $@
+
+etherpad-service.i : etherpad-config.i etherpad-init.i etherpad-sqlite3.i etherpad-plugins.i
 	service etherpad-lite restart
 	touch $@
 
-etherpad.i : etherpad-pkg.i etherpad-config.i etherpad-sqlite3.i etherpad-user.i etherpad-init.i etherpad-service.i
+etherpad.i : etherpad-pkg.i etherpad-config.i etherpad-sqlite3.i etherpad-plugins.i etherpad-user.i etherpad-init.i etherpad-service.i
 	@echo "\n----- [info] etherpad installed\n"
 	touch $@
