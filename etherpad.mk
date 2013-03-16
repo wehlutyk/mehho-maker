@@ -41,6 +41,10 @@ etherpad-plugins.i : etherpad-config.i etherpad-sqlite3.i
 	ls -1 /usr/share/etherpad-lite/node_modules | grep -q ep_doi || (cd /usr/share/etherpad-lite && sudo -u etherpad-lite npm install ep_doi)
 	# ep_help_bubbles
 	ls -1 /usr/share/etherpad-lite/node_modules | grep -q ep_help_bubbles || (cd /usr/share/etherpad-lite && sudo -u etherpad-lite npm install ep_help_bubbles)
+	# ep_previewimages
+	ls -1 /usr/share/etherpad-lite/node_modules | grep -q ep_previewimages || (cd /usr/share/etherpad-lite && sudo -u etherpad-lite npm install ep_previewimages)
+	# ep_linkify
+	ls -1 /usr/share/etherpad-lite/node_modules | grep -q ep_linkify || (cd /usr/share/etherpad-lite && sudo -u etherpad-lite npm install ep_linkify)
 	touch $@
 
 etherpad-service.i : etherpad-config.i etherpad-init.i etherpad-sqlite3.i etherpad-plugins.i
