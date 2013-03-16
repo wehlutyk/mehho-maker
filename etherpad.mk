@@ -51,8 +51,6 @@ etherpad-plugins.i : etherpad-config.i etherpad-sqlite3.i
 	ls -1 /usr/share/etherpad-lite/node_modules | grep -q ep_pubmed || (cd /usr/share/etherpad-lite && sudo -u etherpad-lite npm install ep_pubmed)
 	# ep_headings
 	ls -1 /usr/share/etherpad-lite/node_modules | grep -q ep_headings || (cd /usr/share/etherpad-lite && sudo -u etherpad-lite npm install ep_headings)
-	# ep_iframeinsert
-	ls -1 /usr/share/etherpad-lite/node_modules | grep -q ep_iframeinsert || (cd /usr/share/etherpad-lite/node_modules && sudo -u etherpad-lite git clone https://github.com/michael-dev/ep_iframeinsert.git)
 	touch $@
 
 etherpad-service.i : etherpad-config.i etherpad-init.i etherpad-sqlite3.i etherpad-plugins.i
