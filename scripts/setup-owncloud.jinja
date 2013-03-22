@@ -5,7 +5,7 @@
 set -e
 
 # Check that it's not already done
-if ls -l /var/www/{{ grains['domain'] }} | grep "^{{ owncloud['baseurl'][1:] }}$"
+if ls -1 /var/www/{{ grains['domain'] }} | grep "^{{ owncloud['baseurl'][1:] }}$"
 then
   echo "OwnCloud already installed. Exiting."
   exit 0
