@@ -5,16 +5,19 @@ location:
   country_name: FR
 
   # State or Province Name (full name)
-  state_province_name: Île-de-France
+  #state_province_name: Île-de-France
+  state_province_name: Pyrénées Atlantiques
 
   # Locality Name (eg, city)
-  locality_name: Paris
+  #locality_name: Paris
+  locality_name: Angaïs
 
   # Organization Name (eg, company)
   org_name: Mehho
 
   # Relay host for SMTP
-  relay_host: smtp.numericable.fr
+  #relay_host: smtp.numericable.fr
+  relay_host: smtp.sfr.fr
 
   # Timezone
   timezone: Europe/Paris
