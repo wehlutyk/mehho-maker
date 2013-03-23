@@ -12,24 +12,20 @@ SERVER={{ server }}
 # Now for the actual work
 #
 
-HOST_IP=$(dig {{ dyndomain }} | grep "^{{ dyndomain }}" | awk '{ print $5 }')
 CURRENT_IP=$(wget -O - 'http://checkip.dyndns.org/' 2>/dev/null | sed -e 's/.*Address: \([^<]*\).*/\1/')
 
 if [ -f /tmp/ip_{{ dyndomain }} ]
 then
-        OLD_IP=$(cat /tmp/ip_{{ dyndomain }})
+  LAST_PUSHED_IP=$(cat /tmp/ip_{{ dyndomain }})
 fi
 
 #
-# Don't update unless ip has changed or resolved ip is different from ours
+# Don't update unless ip has changed
 #
 
-if [ "x"${CURRENT_IP} = "x"${OLD_IP} ]
+if [ "x"${CURRENT_IP} = "x"${LAST_PUSHED_IP} ]
 then
-  if [ "x"${HOST_IP} = "x"${CURRENT_IP} ]
-  then
-    exit
-  fi
+  exit
 fi
 
 echo "IP changed from " $OLD_IP " to " $CURRENT_IP
