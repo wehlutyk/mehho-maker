@@ -1,13 +1,18 @@
 /* general styles */
 html { margin: 0; padding: 0; }
-body { background: #FFFDF4; color: #000; margin: 0 auto 1em auto; padding: 1em 2em 0; font: 1em/1.7 sans-serif; /*border-bottom: 1px solid; */max-width: 80em; }
+body { background: #FFFDF4; color: #000; font: 1em/1.7 sans-serif; }
+div.front-page {margin: 0 auto 1em auto; padding 1em 2em 0; max-width: 80em; }
 :link { background: transparent; color: #00f; }
 :visited { background: transparent; color: #0e388c; }
 p { margin-top: 1.1em; margin-bottom: 1.1em; }
 
 
+/* Internet Defense League */
+a.idl { margin: 4em 0; float: right; }
+
+
 /* More specifically */
-body { text-align: center; }
+div.front-page { text-align: center; }
 
 
 /* Header */
