@@ -96,7 +96,7 @@ roundcube:
 
 # OwnCloud
 owncloud:
-  version: 5.0.0
+  version: 5.0.12
   baseurl: /nuage
 
 # Etherpad
