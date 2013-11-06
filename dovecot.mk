@@ -7,6 +7,7 @@ dovecot-config.i : dovecot-pkg.i utils.i
 	cp $(files_dir)/etc/dovecot/conf.d/10-master.conf /etc/dovecot/conf.d/10-master.conf
 	$(jinja_copy) $(files_dir)/etc/dovecot/conf.d/10-ssl.conf.jinja $(settings) /etc/dovecot/conf.d/10-ssl.conf
 	cp $(files_dir)/etc/dovecot/conf.d/15-lda.conf /etc/dovecot/conf.d/15-lda.conf
+	cp $(files_dir)/etc/dovecot/conf.d/20-imap.conf /etc/dovecot/conf.d/20-imap.conf
 	cp $(files_dir)/etc/dovecot/conf.d/20-managesieve.conf /etc/dovecot/conf.d/20-managesieve.conf
 	touch $@
 
