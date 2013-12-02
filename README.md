@@ -7,3 +7,4 @@ Not yet included in the scripts:
 
 * Tahoe-LAFS
 * Domain-name proxy
+* CardDAV Roundcube plugin
