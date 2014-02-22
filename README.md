@@ -7,4 +7,4 @@ Not yet included in the scripts:
 
 * Tahoe-LAFS
 * Domain-name proxy
-* CardDAV Roundcube plugin
+* mumble (apt package, conf file, ufw allow, and cert access)
