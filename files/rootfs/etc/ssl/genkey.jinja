@@ -10,4 +10,4 @@ then
   exit 1
 fi
 
-/usr/bin/openssl genpkey -algorithm RSA -out /etc/ssl/private/{{ grains['fqdn'] }}.key 2048
+/usr/bin/openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:4096 -out /etc/ssl/private/{{ grains['fqdn'] }}.key
