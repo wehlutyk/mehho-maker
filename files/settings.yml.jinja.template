@@ -49,12 +49,12 @@ sudo:
 nginx:
   vhosts:
     {{ grains['domain'] }}:
-      cert: {{ grains['domain'] }}-cacert.crt
+      cert: {{ grains['domain'] }}-gandi.crt
       key: {{ grains['fqdn'] }}.key
 
 # Postfix
 postfix:
-  cert: mail.{{ grains['domain'] }}-cacert.crt
+  cert: mail.{{ grains['domain'] }}-gandi.crt
   key: {{ grains['fqdn'] }}.key
   rootaliasgroup: admin
 
@@ -86,7 +86,7 @@ dyndns:
 
 # Dovecot
 dovecot:
-  cert: mail.{{ grains['domain'] }}-cacert.crt
+  cert: mail.{{ grains['domain'] }}-gandi.crt
   key: {{ grains['fqdn'] }}.key
 
 # Roundcube
@@ -107,6 +107,6 @@ etherpad:
 
 # Prosody
 prosody:
-  cert: {{ grains['domain'] }}-cacert.crt
+  cert: {{ grains['domain'] }}-gandi.crt
   key: {{ grains['fqdn'] }}.key
   conference_host: conference

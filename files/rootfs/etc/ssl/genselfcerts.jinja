@@ -1,5 +1,5 @@
 #!/bin/bash
-# Generate self-signed certificates for {{ grains['domain'] }} and mail.{{ grains['domain'] }}
+# Generate certificate signing requests for {{ grains['domain'] }} and mail.{{ grains['domain'] }}
 
 # Don't tolerate errors
 set -e
@@ -7,9 +7,9 @@ set -e
 # We assume the key has already been generated
 
 # Certificate for {{ grains['domain'] }}
-if [ -f "/etc/ssl/certs/{{ grains['domain'] }}-cacert.crt" ]
+if [ -f "/etc/ssl/certs/{{ grains['domain'] }}-gandi.crt" ]
 then
-  echo "File '/etc/ssl/certs/{{ grains['domain'] }}-cacert.crt' already exists!"
+  echo "File '/etc/ssl/certs/{{ grains['domain'] }}-gandi.crt' already exists!"
   echo "Not overwriting it."
 else
   ./gencsr << EOF
@@ -23,14 +23,14 @@ else
 
 
 EOF
-  openssl x509 -req -days 365 -in {{ grains['fqdn'] }}.csr -signkey private/{{ grains['fqdn'] }}.key -out certs/{{ grains['domain'] }}-cacert.crt
+  openssl x509 -req -days 365 -in {{ grains['fqdn'] }}.csr -signkey private/{{ grains['fqdn'] }}.key -out certs/{{ grains['domain'] }}-gandi.crt
   rm {{ grains['fqdn'] }}.csr
 fi
 
 # Certificate for mail.{{ grains['domain'] }}
-if [ -f "/etc/ssl/certs/mail.{{ grains['domain'] }}-cacert.crt" ]
+if [ -f "/etc/ssl/certs/mail.{{ grains['domain'] }}-gandi.crt" ]
 then
-  echo "File '/etc/ssl/certs/mail.{{ grains['domain'] }}-cacert.crt' already exists!"
+  echo "File '/etc/ssl/certs/mail.{{ grains['domain'] }}-gandi.crt' already exists!"
   echo "Not overwriting it."
   exit 1
 fi
@@ -45,5 +45,5 @@ mail.{{ grains['domain'] }}
 
 
 EOF
-openssl x509 -req -days 365 -in {{ grains['fqdn'] }}.csr -signkey private/{{ grains['fqdn'] }}.key -out certs/mail.{{ grains['domain'] }}-cacert.crt
+openssl x509 -req -days 365 -in {{ grains['fqdn'] }}.csr -signkey private/{{ grains['fqdn'] }}.key -out certs/mail.{{ grains['domain'] }}-gandi.crt
 rm {{ grains['fqdn'] }}.csr
