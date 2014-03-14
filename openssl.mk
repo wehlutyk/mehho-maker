@@ -8,8 +8,8 @@ openssl-config.i : openssl-pkg.i utils.i
 	chmod 755 /etc/ssl/genkey
 	$(jinja_copy) $(files_dir)/etc/ssl/gencsr.jinja $(settings) /etc/ssl/gencsr
 	chmod 755 /etc/ssl/gencsr
-	$(jinja_copy) $(files_dir)/etc/ssl/genselfcerts.jinja $(settings) /etc/ssl/genselfcerts
-	chmod 755 /etc/ssl/genselfcerts
+	$(jinja_copy) $(files_dir)/etc/ssl/gendomaincsrs.jinja $(settings) /etc/ssl/gendomaincsrs
+	chmod 755 /etc/ssl/gendomaincsrs
 	touch $@
 
 openssl-genkey.i : openssl-config.i
@@ -17,11 +17,11 @@ openssl-genkey.i : openssl-config.i
 	-cd /etc/ssl && ./genkey
 	touch $@
 
-openssl-genselfcerts.i : openssl-genkey.i
+openssl-gendomaincsrs.i : openssl-genkey.i
 	# Ignore errors here if the certs already exist
-	-cd /etc/ssl && ./genselfcerts
+	-cd /etc/ssl && ./gendomaincsrs
 	touch $@
 
-openssl.i : openssl-pkg.i openssl-config.i openssl-genkey.i openssl-genselfcerts.i
+openssl.i : openssl-pkg.i openssl-config.i openssl-genkey.i openssl-gendomaincsrs.i
 	@echo "\n----- [info] openssl installed\n"
 	touch $@
